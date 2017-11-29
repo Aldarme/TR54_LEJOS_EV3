@@ -1,0 +1,52 @@
+
+RESUME:
+
+Politique de Negociation:
+
+-> synchronisation des vitesses
+
+-> Interseection
+	- Robot envoie requete passage au serveur d'intersection
+	- Serveur construit une séquence de passage ordonnée à partir des requetes reçu
+		et transmet la sequence à chacun des robots.
+	- Lite contient: 
+		-toutes les robots ayant fait une requete
+		-leur position sur le parcours
+		-leur vitesses
+	- Robot peut franchir l'intersection mais doit synchroniser leur vitesses avec ceux qui les précèdent
+	-Tant qu'un robots n'est pas dans la sequence de passage -> doit s'arreter avant l'intersection
+
+
+
+Strategie de regulation:
+
+-Construction sequence de passage
+
+ -> FIFO:
+ 	le 1er arrivé à l'intersection est le premiers à en sortir (attention interblocage)
+
+ -> Batch: (celle que l'on prendra)
+ 	- La séquence de passage actuelle est vide
+	- Le dernier robot dans la séquence de passage provient de la même voie que le robot actuel
+	- Le dernier robot dans la séquence de passage provient de l’autre voie, mais le délai entre l’ajout
+		de ce dernier robot et du robot courant est supérieur à un seuil T (par exemple 5 secondes)
+
+	Explq. prof: si deux robot arrive en même temps, mais que sur une des branche un autre robot est déja 
+	présent, alors on fera passer (comme un convoit) en priorité tous les robots présent sur la branche ou il y en le plus.
+
+
+
+Contraintes:
+
+ - Le capteur ultrason sera utilisé pour maintenir une distance de sécurité entre les robots
+ - Le suivi de trajectoire et le positionnement du robot seront réalisés via le capteur couleur
+ - L’ordonnancement des robots devra être clair et visible : le robot en tête de la séquence affichera sa
+	diode en vert, le second robot l’affichera en orange, les autres l’afficheront en rouge. Si un robot n’est
+	pas dans l’intersection, il n’affichera pas de couleur. S’il a émis une requête pour entrer dans
+	l’intersection, mais qu’il n’est pas encore présent dans la séquence de passage, il clignotera en rouge.
+ - Les politiques énoncées ici sont centralisées : il n’y a pas d’échange direct d’information entre les robot
+ - Le serveur d’intersection pourra être au choix une brique EV3, un téléphone portable ou un ordinateur
+	portable.
+ - Les robots ne devront pas entrer en collision, que ce soit au niveau de l’intersection (collision empêchée
+	par la négociation des droits de passage) ou que ce soit dans une même voie (collision empêchée par le
+	capteur ultrason).

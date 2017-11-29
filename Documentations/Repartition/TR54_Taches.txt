@@ -1,0 +1,60 @@
+﻿NuttinGo
+	- Construction sequence de passage
+
+	
+Val
+	- Transmission de la séquence de passage (Serveur -> Robots) :
+		- ID Robot (ayant envoyé une requete)
+		- Position
+		- Vitesse
+
+
+Toto
+	- Envoi des infos des Robots dans la séquence de passage (Robots -> Serveur) :
+		- ID Robot
+			-envoie un ID unique, dédié au robot
+
+
+		- Positiondu marqueur orange 
+			A partir du marqueur orange, compter le nombre de tour de roue effectué pour en déduire:
+				- entrée dans la zone d'entrée
+				- Sortie de la zone d'entrée
+				- entré dans la zone de stockage
+				- Sortie de la zone de stockage
+				- Entrée dans la zone de conflit
+				- Sortie de la zone de conflit
+				- entré dans la zone de sortie
+				- Sortie de la zone de sortie
+
+		- Vitesse
+			- envoie au serveur la vitesse actuelle du robot
+
+		- Batch : dans quelle voie est le robot
+
+
+Neid02
+	- Suivi de trajectoire
+		- Droite/Gauche quand sur le noir
+			- Gauche -> noir 
+			- Droite -> blanc
+		- Tout droit quand sur le bleu
+
+-----------------------------------------A faire----------------------------------------------
+		
+- Maintien de la distance de sécurité entre 2 robots						(Déjà fait)
+
+
+- Envoi de la requete de passage (Robot -> Serveur)
+
+
+- Couleur de la diode en fonction de la position dans la séquence :
+	- 1 : Vert
+	- 2 : Orange
+	- Suivants : Rouge
+	- Requète envoyé mais hors séquence : Rouge clignotant
+	- Hors séquence : Rien
+
+- Arret du robot avant l'intersection s'il n'est pas dans la séquence de passage
+
+
+- Synchronisation de la vitesse avec le robot précédent (franchir l'intersection une fois que celui devant soit sorti).
