@@ -14,6 +14,9 @@ Toto
 		- ID Robot
 			-envoie un ID unique, dédié au robot
 
+		- Vitesse
+			- envoie au serveur la vitesse actuelle du robot
+
 
 		- Positiondu marqueur orange 
 			A partir du marqueur orange, compter le nombre de tour de roue effectué pour en déduire:
@@ -26,8 +29,7 @@ Toto
 				- entré dans la zone de sortie
 				- Sortie de la zone de sortie
 
-		- Vitesse
-			- envoie au serveur la vitesse actuelle du robot
+		
 
 		- Batch : dans quelle voie est le robot
 

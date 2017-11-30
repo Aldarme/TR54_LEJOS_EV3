@@ -9,7 +9,11 @@ import java.util.concurrent.TimeUnit;
 
 import lejos.hardware.lcd.LCD;
 
-
+/**
+ * 
+ * @author promet
+ *
+ */
 public class RobotMoveMode {
 	
 	/**********************************************************************************

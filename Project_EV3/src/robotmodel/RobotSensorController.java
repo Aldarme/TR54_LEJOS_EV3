@@ -5,6 +5,12 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 
+/**
+ * 
+ * @author promet
+ *
+ */
+
 public class RobotSensorController
 {
 	private float[] sampler = new float[3];

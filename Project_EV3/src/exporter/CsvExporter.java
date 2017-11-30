@@ -11,6 +11,12 @@ import org.omg.CORBA.Environment;
 /*
  * allow to create file on our PC
  */
+
+/**
+ * 
+ * @author promet
+ *
+ */
 public class CsvExporter
 {	
 	static FileWriter fileWriter;
