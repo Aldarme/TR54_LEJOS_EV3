@@ -40,20 +40,23 @@ public class ReceiveServer {
 	
 	private static void processData()
 	{
-		//TODO
-		// Recup les datas (rId, rLocation, rSpeed) 
+		String delim = "\r\n";
 		
+		String[] values = data.split(delim);
 		
-		
-//		rId = ;
-//		rLocation = ;
-//		rSpeed = ;
+		rId = Integer.parseInt(values[0]);
+		rLocation = Integer.parseInt(values[1]);
+		rSpeed = Integer.parseInt(values[2]);
 		
 		updateSequence();
 	}
 	
 	private static void updateSequence()
 	{			
+		//TODO
+		// Enlever les robots qui sortent de la zone de conflit de la séquence de passage
+		
+		
 		// Go through the sequence list
 		for (RobotData r : sequence) {
 			// If the Robot is on the sequence list
