@@ -22,8 +22,8 @@ public class RobotMoveMode {
 	private float WifiSpeedrcv = 0;
 	private float WifiSpeedsend = 0;
 
-	RobotMotorController robotController = new RobotMotorController();
-	RobotSensorController mySensor = new RobotSensorController();
+	RobotMotorController motorController = new RobotMotorController();
+	RobotSensorController sensorController = new RobotSensorController();
 	
 	/*
 	 * Robotleader
@@ -31,12 +31,13 @@ public class RobotMoveMode {
 	 */
 	void leader(int pTime, float pW)
 	{
-		pSpeedG = robotController.getMaxSpeedG() * pW;  
-		pSpeedD = robotController.
+		pSpeedG = motorController.getMaxSpeedG() * pW;				
+		pSpeedD = motorController.getMaxSpeedD() * pW;	
 		
-		robotController.setSpeedLeft(Math.round(pSpeedG));
-		robotController.setSpeedRight(Math.round(pSpeedD));
-		robotController.forward();
+		motorController.setLeftSpeed(Math.round(pSpeedG));
+		motorController.setRightSpeed(Math.round(pSpeedD));
+		
+		motorController.forward();
 		try {
 			TimeUnit.MILLISECONDS.sleep(pTime);
 		} catch (InterruptedException e) {
@@ -44,7 +45,7 @@ public class RobotMoveMode {
 		e.printStackTrace();
 		}
 		
-		robotController.stop();
+		motorController.stop();
 		try {
 			TimeUnit.MILLISECONDS.sleep(pTime);
 		} catch (InterruptedException e) {
@@ -59,20 +60,20 @@ public class RobotMoveMode {
 	 */
 	void allOrNothing(float pW)
 	{		
-		pSpeedG = robotController.getMaxSpeedG() * pW;
-		pSpeedD = robotController.getMaxSpeedD() * pW;
+		pSpeedG = motorController.getMaxSpeedG() * pW;
+		pSpeedD = motorController.getMaxSpeedD() * pW;
 		
-		if(mySensor.getDist(5) <= 0.15) //getDist() retourne une distance en mètre
+		if(sensorController.getDist(5) <= 0.15) //getDist() retourne une distance en mètre
 		{
 			pSpeedG = 0f;
 			pSpeedD = 0f;
 		}			
 		LCD.clear();
-		LCD.drawString(Float.toString(mySensor.getDist(5)), 0, 2);
-		CsvExporter.Writefile(mySensor.getDist());					//write on CSV file
-		robotController.setSpeedLeft(Math.round(pSpeedG));
-		robotController.setSpeedRight(Math.round(pSpeedD));
-		robotController.forward();
+		LCD.drawString(Float.toString(sensorController.getDist(5)), 0, 2);
+		CsvExporter.Writefile(sensorController.getDist());					//write on CSV file
+		motorController.setLeftSpeed(Math.round(pSpeedG));
+		motorController.setRightSpeed(Math.round(pSpeedD));
+		motorController.forward();
 	}
 	
 	/*
@@ -90,13 +91,14 @@ public class RobotMoveMode {
 	 */
 	void aUnPoint(int a, float D)
 	{
-		CsvExporter.Writefile(mySensor.getDist());		//write on CSV file
+		CsvExporter.Writefile(sensorController.getDist());		//write on CSV file
 		
-		currentSpeed = Math.max( Math.min(50, a * (mySensor.getDist(5) - D) ), 0);
+		currentSpeed = Math.max( Math.min(50, a * (sensorController.getDist(5) - D) ), 0);
 		
-		robotController.setSpeedLeft(Math.round(currentSpeed));
-		robotController.setSpeedRight(Math.round(currentSpeed));
-		robotController.forward();
+		motorController.setLeftSpeed(Math.round(currentSpeed));
+		motorController.setRightSpeed(Math.round(currentSpeed));
+		
+		motorController.forward();
 	}
 	
 	
@@ -109,56 +111,22 @@ public class RobotMoveMode {
 	 */
 	void aDeuxPoint(int a, float D)
 	{
-		CsvExporter.Writefile(mySensor.getDist());		//write on CSV file
+		CsvExporter.Writefile(sensorController.getDist());		//write on CSV file
 		
 		previousSpeed = currentSpeed;
 		currentSpeed = Math.min(
 								Math.max(
 										 2.5f * (previousSpeed - 20f) , Math.min(
 												 								Math.max(
-												 											a * (mySensor.getDist(5) - D) , 0
-												 										), mySensor.getDist(5) 
+												 											a * (sensorController.getDist(5) - D) , 0
+												 										), sensorController.getDist(5) 
 												 	 						   ) 
 										) , 50 
 								);
 		
 		
-		robotController.setSpeedLeft(Math.round(currentSpeed));
-		robotController.setSpeedRight(Math.round(currentSpeed));
-		robotController.forward();
-	}
-	
-	/*
-	 * Communication sans-fil
-	 */
-	/**********************************************************************************
-	 * COMMUNICATION SANS FIL
-	 *********************************************************************************/
-	void wifiRcv()
-	{		
-		String Speed ="";
-		try {
-			Speed = Wifi.ServeurWifi();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-		}
-		if(Speed == "ERROR")
-		{
-			allOrNothing(50);
-			return;
-		}
-		
-		WifiSpeedrcv = Float.valueOf(Speed);
-		robotController.setSpeedLeft(Math.round(WifiSpeedrcv));
-		robotController.setSpeedRight(Math.round(WifiSpeedrcv));
-		
-	}
-	
-	void wifiSend() throws IOException
-	{
-		WifiSpeedsend = robotController.getMaxSpeedG();
-		Wifi.clientWifi( Float.toString(WifiSpeedsend) );
-	}
-		
-	
+		motorController.setLeftSpeed(Math.round(currentSpeed));
+		motorController.setRightSpeed(Math.round(currentSpeed));
+		motorController.forward();
+	}	
 }

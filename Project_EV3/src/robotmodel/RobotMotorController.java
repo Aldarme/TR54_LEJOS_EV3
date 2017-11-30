@@ -40,6 +40,19 @@ public class RobotMotorController
 		this.rightMotor.rotate((int) -angle);
 	}
 	
+	void rotateLeft(float angle)
+	{
+		float rotation = angle * 2.33f;
+		this.rightMotor.rotate((int) angle, true);
+	}
+	
+	void rotateRight(float angle)
+	{
+		float rotation = angle * 2.33f;
+		this.leftMotor.rotate((int)angle, true);
+	}
+	
+	
 	/*
 	 * set speed on left && right motor by multiplying a ceof on ( LeftMotorMaxSpeed && RightMotorMaxSpeed)
 	 */
@@ -60,6 +73,22 @@ public class RobotMotorController
 	 */
 	public void setRightSpeed(float pSpeed) {
 		this.rightMotor.setSpeed( (int) (pSpeed / 100f * this.rightMotor.getMaxSpeed()) );
+	}
+	
+	float getMaxSpeedG()
+	{
+		return this.leftMotor.getMaxSpeed();		 
+	}
+	
+	float getMaxSpeedD()
+	{
+		return this.rightMotor.getMaxSpeed();		 
+	}
+	
+	int getCurrentSpeed()
+	{
+		 int avrgSpeed = (this.leftMotor.getSpeed() +  this.rightMotor.getSpeed()) / 2; 
+		 return avrgSpeed;
 	}
 	
 	/*

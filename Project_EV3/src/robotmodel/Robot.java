@@ -15,9 +15,8 @@ import lejos.robotics.RegulatedMotor;
  */
 public class Robot{
 	private int ID;
-	private int Speed;
 	
-	private RobotMotorController mottorController;
+	private RobotMotorController motorController;
 	private RobotSensorController sensorController;
 	
 	/*
@@ -26,7 +25,6 @@ public class Robot{
 	public Robot(int pID)
 	{
 		this.ID = pID;
-		this.Speed = 0;
 	}
 		
 	/*
@@ -37,31 +35,24 @@ public class Robot{
 	}
 
 	/*
-	 * Sette ID
-	 */
-	public void setId(int pID) {
-		this.ID = pID;
-	}
-
-	/*
-	 * Getter Speed
+	 * Getter current Speed
 	 */
 	public int getSpeed() {
-		return this.Speed;
+		return motorController.getCurrentSpeed();
 	}	
 
 	/*
-	 * 
+	 * Getter ColorSensor
 	 */
-	public EV3ColorSensor getColorSensor() {
-		//return 
+	public float[] getColorSensor() {
+		return sensorController.getSampler();
 	}
 
 	/*
-	 * 
+	 * Getter DistanceSensor
 	 */
-	public EV3UltrasonicSensor getDistanceSensor() {
-		//return 
+	public float getDistanceSensor() {
+		return sensorController.getDist();
 	}
 	
 	
