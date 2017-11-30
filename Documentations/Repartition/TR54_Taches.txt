@@ -1,5 +1,16 @@
 ﻿NuttinGo
 	- Construction sequence de passage
+	- Couleur de la diode en fonction de la position dans la séquence :
+		- 1 : Vert
+		- 2 : Orange
+		- Suivants : Rouge
+		- Requète envoyé mais hors séquence : Rouge clignotant
+		- Hors séquence : Rien
+
+	Brick ev3 = BrickFinder.getDefault();
+        LED led =ev3.getLED();
+        //Changement à faire au moment de la récpetion de la séquence de passage
+        led.setPattern(2); // 1: vert, 2: rouge, 3: orange, 5: rouge clignotant 0:rien !!!!
 
 	
 Val
@@ -48,13 +59,6 @@ Neid02
 
 - Envoi de la requete de passage (Robot -> Serveur)
 
-
-- Couleur de la diode en fonction de la position dans la séquence :
-	- 1 : Vert
-	- 2 : Orange
-	- Suivants : Rouge
-	- Requète envoyé mais hors séquence : Rouge clignotant
-	- Hors séquence : Rien
 
 - Arret du robot avant l'intersection s'il n'est pas dans la séquence de passage
 
