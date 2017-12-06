@@ -4,12 +4,14 @@ public class RobotData {
 	private int id;
 	private int location;
 	private int speed;
+	private double time;
 	
-	public RobotData(int id, int location, int speed)
+	public RobotData(int id, int location, int speed, double time)
 	{
 		this.id = id;
 		this.location = location;
 		this.speed = speed;
+		this.time = time;
 	}
 	
 	public int getId() {
@@ -32,4 +34,11 @@ public class RobotData {
 		this.speed = speed;
 	}
 	
+	public double getTime() {
+		return time;
+	}
+
+	public void setTime(int time) {
+		this.time = time;
+	}
 }
