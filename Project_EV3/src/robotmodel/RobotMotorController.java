@@ -7,12 +7,14 @@ import lejos.robotics.RegulatedMotor;
 /**
  * 
  * @author promet
+ * modify by ncarrion
  *
  */
 public class RobotMotorController
 {
 	private RegulatedMotor leftMotor;
 	private RegulatedMotor rightMotor;
+	private float vitesseDeBase;
 	
 	public RobotMotorController()
 	{
@@ -25,8 +27,18 @@ public class RobotMotorController
 	 */
 	void forward()
 	{
-		this.leftMotor.forward();;
+		this.leftMotor.forward();
 		this.rightMotor.forward();
+	}
+	
+	/**
+	 * Initialization of speed and state of robot (move forward)
+	 */
+	public void init(float vitesse){
+		vitesseDeBase = vitesse;
+		this.leftMotor.setSpeed(Float.floatToIntBits(vitesse));
+		this.rightMotor.setSpeed(Float.floatToIntBits(vitesse));
+		forward();
 	}
 	
 	/*
@@ -50,6 +62,26 @@ public class RobotMotorController
 	{
 		float rotation = angle * 2.33f;
 		this.leftMotor.rotate((int)angle, true);
+	}
+	
+	/**
+	 * This function ask to robot to turn right while move forward
+	 * @param ratio this parameter decline the speed of the right motor in relation to the speed of the left motor
+	 */
+	public void rotateRightProgressive(float ratio) {		
+		this.rightMotor.setSpeed(Float.floatToIntBits(vitesseDeBase*ratio));
+		this.leftMotor.setSpeed(Float.floatToIntBits(vitesseDeBase));
+		forward();
+	}
+	
+	/**
+	 *  This function ask to robot to turn left while move forward
+	 * @param ratio this parameter decline the speed of the left motor in relation to the speed of the right motor
+	 */
+	public void rotateLeftProgressive(float ratio) {
+		this.rightMotor.setSpeed(Float.floatToIntBits(vitesseDeBase));
+		this.leftMotor.setSpeed(Float.floatToIntBits(vitesseDeBase*ratio));
+		forward();
 	}
 	
 	

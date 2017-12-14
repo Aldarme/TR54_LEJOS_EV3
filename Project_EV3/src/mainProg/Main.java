@@ -1,70 +1,77 @@
 package mainProg;
 
+import lejos.hardware.Button;
 import robotmodel.*;
 import threads.*;
 
 /**
  * 
  * @author promet
- *
+ * modify by ncarrion
  */
 
 public class Main {
 
 	public static void main(String[] args) throws InterruptedException
 	{
+		final int button = Button.waitForAnyPress();
+
 		//Init my robot with an ID
 		Robot myRobot = new Robot(0);
 		
-		//int array to test organe rgb value
-		int orangeTab[] = new int[] {1,2,3};
+		//int array to test orange rgb value
+		//rgb[0]>0.11 && rgb[0]<0.2) && (rgb[1]>0.04 && rgb[1]<0.08 ) && (rgb[2]>0.002 && rgb[2]<0.08 
+		float orangeTab[] = new float[] {0.11f,0.2f,0.04f,0.08f,0.002f,0.08f};
 		
 		//Thread
 		Thread threadEntree = new Thread(new ThreadEntreeZone(myRobot));
 		Thread threadStock = new Thread(new ThreadStockZone(myRobot));
 		Thread threadConflict = new Thread(new ThreadConflictZone(myRobot));
 		Thread threadSortie = new Thread(new ThreadConflictZone(myRobot));
-		   
 		
-		
-		for(;;)
-		{
-			/*
-			 * Lancer la politique de suivis de ligne
-			 */
+		if(button == Button.ID_RIGHT) {
+			//server();
+		} else if(button == Button.ID_LEFT) {
 			
-			
-			/*
-			 * Orange mark detection
-			 */
-			if (myRobot.getColorSensor()[0] == orangeTab[0]		//get real value
-				&& myRobot.getColorSensor()[1] == orangeTab[1]	//of ORANGE RGB
-				&&myRobot.getColorSensor()[2] == orangeTab[2]
-				)
+			for(;;)
 			{
-				//Start the Thread for Entree Zone
-				threadEntree.start();
-				threadEntree.join();
+				/*
+				 * Lancer la politique de suivis de ligne
+				 */
+				myRobot.moveModeController.followLine();
 				
-				if(myRobot.getValidServer() == false)
+				/*
+				 * Orange mark detection
+				 */
+				if ((myRobot.getColorSensor()[0] > orangeTab[0] && 	myRobot.getColorSensor()[0] <  orangeTab[1]	)//get real value
+					&& (myRobot.getColorSensor()[1] > orangeTab[2] && myRobot.getColorSensor()[1] <  orangeTab[3]	)	//of ORANGE RGB
+					&& (myRobot.getColorSensor()[2] > orangeTab[4] && myRobot.getColorSensor()[2] <  orangeTab[5]	) 
+					)
 				{
-					myRobot.StopMotor();
+					//Start the Thread for Entree Zone
+					threadEntree.start();
+					threadEntree.join();
 					
-					//Start the Thread for Stock Zone
-					threadStock.start();
-					threadStock.join();
+					if(myRobot.getValidServer() == false)
+					{
+						myRobot.StopMotor();
+						
+						//Start the Thread for Stock Zone
+						threadStock.start();
+						threadStock.join();
+						
+						//Wait that "ValidServer" was update from false to true
+						while(myRobot.getValidServer() == false){}					
+					}
 					
-					//Wait that "ValidServer" was update from false to true
-					while(myRobot.getValidServer() == false){}					
+					//Start the Thread for Conflict Zone
+					threadConflict.start();				
+					threadConflict.join();
+					
+					//Start the Thread for Sortie Zone
+					threadSortie.start();	
+					threadSortie.join();
 				}
-				
-				//Start the Thread for Conflict Zone
-				threadConflict.start();				
-				threadConflict.join();
-				
-				//Start the Thread for Sortie Zone
-				threadSortie.start();	
-				threadSortie.join();
 			}
 		}
 	}

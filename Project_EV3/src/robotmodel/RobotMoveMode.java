@@ -12,6 +12,7 @@ import lejos.hardware.lcd.LCD;
 /**
  * 
  * @author promet
+ * modify by ncarrion
  *
  */
 public class RobotMoveMode {
@@ -28,6 +29,71 @@ public class RobotMoveMode {
 
 	RobotMotorController motorController = new RobotMotorController();
 	RobotSensorController sensorController = new RobotSensorController();
+	
+	/**
+	 * Function followLine 
+	 */
+	
+	public void followLine() {
+		
+		
+		float rgb[]= new float[3];
+		
+		motorController.init(250); //250 good value for good following!
+		int compteurBlanc =1;
+		int compteurNoir=1;
+		int compteurVirage=0;
+		float ratio = (float) 0.95;
+
+		//Méthode numéro 2 si noir tourner à Gauche si blanc tourner à droite
+		for(;;) {
+			rgb = sensorController.getRgbSampler();
+			
+			//Ecriture couleur renvoyée
+			LCD.drawString("RGB : ", 0, 0, false);
+			LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+			LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+			LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+			
+			//Si noir
+			if(rgb[0]<=0.06 && rgb[1]<=0.06 && rgb[2]<=0.06) {
+				compteurBlanc=1;
+				motorController.rotateLeftProgressive((float)Math.pow(ratio, compteurNoir));	
+				compteurNoir++;
+				compteurVirage++;
+			}
+			
+			//Si blanc
+			else if(rgb[0]>0.06 && rgb[1]>0.06 && rgb[2]>0.06){
+				compteurNoir=1;
+				motorController.rotateRightProgressive((float)Math.pow(ratio, compteurBlanc));
+				compteurBlanc++;
+				compteurVirage--;
+			}
+			
+			//Si "bleu" 
+			else if ((rgb[0]>0.024 && rgb[0]<0.03 ) && (rgb[1]>0.06 && rgb[1]<0.084 ) && (rgb[2]>0.050 && rgb[2]<0.067 )) {
+				compteurNoir=1;
+				compteurBlanc=1;
+				motorController.init(250);
+				compteurVirage=0;
+				LCD.clear(4);
+			}
+			
+			//Si "orange" 
+			else if ((rgb[0]>0.11 && rgb[0]<0.2) && (rgb[1]>0.04 && rgb[1]<0.08 ) && (rgb[2]>0.002 && rgb[2]<0.08 )) {
+				compteurNoir=1;
+				compteurBlanc=1;
+				motorController.init(250);
+
+				if(compteurVirage<0)
+					LCD.drawString("Right", 0, 4, false);
+				else if(compteurVirage>0)
+					LCD.drawString("Left ", 0, 4, false);
+			}
+		}
+	}
+	
 	
 	/*
 	 * Robotleader

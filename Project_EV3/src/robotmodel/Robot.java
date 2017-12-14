@@ -20,6 +20,7 @@ public class Robot{
 	
 	private RobotMotorController motorController;
 	private RobotSensorController sensorController;
+	public RobotMoveMode moveModeController;
 	
 	/*
 	 * Default Constructor
