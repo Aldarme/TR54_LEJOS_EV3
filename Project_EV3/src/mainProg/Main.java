@@ -1,6 +1,7 @@
 package mainProg;
 
 import robotmodel.*;
+import threads.*;
 
 /**
  * 
@@ -18,9 +19,20 @@ public class Main {
 		//int array to test organe rgb value
 		int orangeTab[] = new int[] {1,2,3};
 		
+		//Thread
+		Thread threadEntree = new Thread(new ThreadEntreeZone(myRobot));
+		Thread threadStock = new Thread(new ThreadStockZone(myRobot));
+		Thread threadConflict = new Thread(new ThreadConflictZone(myRobot));
+		Thread threadSortie = new Thread(new ThreadConflictZone(myRobot));
+		   
+		
 		
 		for(;;)
 		{
+			/*
+			 * Lancer la politique de suivis de ligne
+			 */
+			
 			
 			/*
 			 * Orange mark detection
@@ -30,57 +42,26 @@ public class Main {
 				&&myRobot.getColorSensor()[2] == orangeTab[2]
 				)
 			{
-				//set current position of the robot
-				myRobot.setPosition(Position.ENTREE);	
-				
-				//send to the server, the current position
-				network.SendServer.dataToSend(	myRobot.getId(), 
-											   	myRobot.getSpeed(), 
-											   	myRobot.getPosition() );
-				
-				myRobot.nbrRotateWheel((float)(360*2));
+				//Start the Thread for Entree Zone
+				threadEntree.start();
 				
 				if(myRobot.getValidServer() == false)
 				{
 					myRobot.StopMotor();
 					
-					//set current position of the robot
-					myRobot.setPosition(Position.STOCKAGE);
-					
-					//send current position to the server
-					network.SendServer.dataToSend(	myRobot.getId(), 
-											   		myRobot.getSpeed(), 
-											   		myRobot.getPosition() );
-					
-					myRobot.nbrRotateWheel((float)(180));
+					//Start the Thread for Stock Zone
+					threadStock.start();
 					
 					//Wait that "ValidServer" was update from false to true
 					while(myRobot.getValidServer() == false){}					
 				}
 				
-				myRobot.nbrRotateWheel((float)(360*4));
+				//Start the Thread for Conflict Zone
+				threadConflict.start();
 				
-				//set current position of the robot
-				myRobot.setPosition(Position.CONFLICT);
-				
-				//send current position to the server
-				network.SendServer.dataToSend(	myRobot.getId(), 
-										   		myRobot.getSpeed(), 
-										   		myRobot.getPosition() );
-				
-				myRobot.nbrRotateWheel((float)(360*4));
-				
-				//set current position of the robot
-				myRobot.setPosition(Position.SORTIE);
-				
-				//send current position to the server
-				network.SendServer.dataToSend(	myRobot.getId(), 
-										   		myRobot.getSpeed(), 
-										   		myRobot.getPosition() );
-				
-				
-				
-			}			
+				//Start the Thread for Sortie Zone
+				threadSortie.start();				
+			}
 		}
 	}
 }

@@ -1,5 +1,11 @@
 package robotmodel;
 
+/**
+ * 
+ * @author promet
+ *
+ */
+
 public class RobotData {
 	private int id;
 	private int location;
