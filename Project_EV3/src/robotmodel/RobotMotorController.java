@@ -37,7 +37,7 @@ public class RobotMotorController
 	{
 		float rotation = angle * 2.33f;
 		this.leftMotor.rotate((int)angle, true);
-		this.rightMotor.rotate((int) -angle);
+		this.rightMotor.rotate((int) angle);
 	}
 	
 	void rotateLeft(float angle)
@@ -86,6 +86,7 @@ public class RobotMotorController
 	}
 	
 	int getCurrentSpeed()
+	
 	{
 		 int avrgSpeed = (this.leftMotor.getSpeed() +  this.rightMotor.getSpeed()) / 2; 
 		 return avrgSpeed;

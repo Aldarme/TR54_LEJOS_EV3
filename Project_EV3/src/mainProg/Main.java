@@ -1,4 +1,6 @@
-package robotmodel;
+package mainProg;
+
+import robotmodel.*;
 
 /**
  * 
