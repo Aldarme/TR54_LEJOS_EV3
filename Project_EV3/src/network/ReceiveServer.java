@@ -38,8 +38,13 @@ public class ReceiveServer {
 			if (data != null){
 				LCD.drawString(String.format("Data : ", data), 0, 3);
 				processData();
-			}
+			}			
 		}
+	}
+	
+	private static void updateServerAcquitment()
+	{
+		
 	}
 	
 	private static void processData()

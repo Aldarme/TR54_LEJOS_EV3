@@ -23,24 +23,25 @@ Val
 Toto
 	- Envoi des infos des Robots dans la séquence de passage (Robots -> Serveur) :
 		- ID Robot
-			-envoie un ID unique, dédié au robot
+			-envoie un ID unique, dédié au robot -OK
 
 		- Vitesse
-			- envoie au serveur la vitesse actuelle du robot
+			- envoie au serveur la vitesse actuelle du robot -OK
 
 
 		- Positiondu marqueur orange 
 			A partir du marqueur orange, compter le nombre de tour de roue effectué pour en déduire:
-				- entrée dans la zone d'entrée
-				- Sortie de la zone d'entrée
-				- entré dans la zone de stockage
-				- Sortie de la zone de stockage
-				- Entrée dans la zone de conflit
-				- Sortie de la zone de conflit
-				- entré dans la zone de sortie
-				- Sortie de la zone de sortie
+				- entrée dans la zone d'entrée     -OK
+				- Sortie de la zone d'Entrée       -OK
+				- entré dans la zone de stockage   -OK
+				- Sortie de la zone de stockage    -OK
+				- Entrée dans la zone de conflit   -OK
+				- Sortie de la zone de conflit     -OK
+				- entré dans la zone de sortie     -OK
+				- Sortie de la zone de sortie      -OK
 
-		
+		- Reception du boolean d'acquitement de zone de stockage	-OK
+
 
 		- Batch : dans quelle voie est le robot
 

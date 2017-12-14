@@ -2,23 +2,25 @@ package network;
 
 import java.nio.ByteBuffer;
 
+import robotmodel.Robot;
+
 public class RobotRcvListner implements BroadcastListener{
 
-	private String lstnerValidServer;
+	private Robot myRobot;
 	
-	public RobotRcvListner() {
-		// TODO Auto-generated constructor stub
+	public RobotRcvListner(Robot pMyRobot) {
+		this.myRobot = pMyRobot;
 	}
 	
 	@Override
 	public void onBroadcastReceived(byte[] message)
 	{
-		lstnerValidServer = ByteBuffer.wrap(message).toString();
-	}
-	
-	public boolean getBool()
-	{
+		//get string from wifi
+		String lstnerValidServer = ByteBuffer.wrap(message).toString();
+		
+		//convert String to Boolean
 		Boolean temp = Boolean.valueOf(lstnerValidServer);
-		return temp;
+		
+		this.myRobot.SetValidServer(temp);
 	}
 }
