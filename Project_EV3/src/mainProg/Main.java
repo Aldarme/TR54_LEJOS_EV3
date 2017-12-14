@@ -39,15 +39,6 @@ public class Main {
 		if(button == Button.ID_RIGHT) {
 			LCD.clear();
 			//server();
-		} 
-		else if(button == Button.ID_UP)
-		{
-			for(;;) {
-				LCD.clear();
-				LCD.drawString(Float.toString(myRobot.sensorController.getRgbSampler()[0]), 0, 0, false);
-				LCD.drawString(Float.toString(myRobot.sensorController.getRgbSampler()[1]), 0, 1, false);
-				LCD.drawString(Float.toString(myRobot.sensorController.getRgbSampler()[2]), 0, 2, false);
-			}
 		}
 		else if(button == Button.ID_LEFT) {
 			LCD.clear();

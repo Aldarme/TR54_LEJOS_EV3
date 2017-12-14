@@ -31,7 +31,8 @@ public class RobotMoveMode {
 	private int compteurNoir=1;
 	private int compteurVirage=0;
 	float rgb[]= new float[3];
-	float ratio = 0.95f;
+	float ratioG = 0.95f;
+	float ratioD = 0.95f;
 
 	RobotMotorController motorController;
 	RobotSensorController sensorController;
@@ -63,7 +64,7 @@ public class RobotMoveMode {
 			//Si noir
 			if(rgb[0]<= 0.06 && rgb[1]<= 0.06 && rgb[2]<=0.06) {
 				compteurBlanc=1;
-				motorController.rotateLeftProgressive((float)(Math.pow(ratio, compteurNoir)));	
+				motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
 				compteurNoir++;
 				compteurVirage++;
 			}
@@ -71,13 +72,13 @@ public class RobotMoveMode {
 			//Si blanc
 			else if(rgb[0]>0.06 && rgb[1]>0.06 && rgb[2]>0.06){
 				compteurNoir=1;
-				motorController.rotateRightProgressive((float)Math.pow(ratio, compteurBlanc));
+				motorController.rotateRightProgressive((float)Math.pow(ratioD, compteurBlanc));
 				compteurBlanc++;
 				compteurVirage--;
 			}
 			
 			//Si "bleu" 
-			else if ((rgb[0]>0.024 && rgb[0]<0.03 ) && (rgb[1]>0.06 && rgb[1]<0.084 ) && (rgb[2]>0.050 && rgb[2]<0.067 )) {
+			else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
 				compteurNoir=1;
 				compteurBlanc=1;
 				motorController.init();
@@ -85,17 +86,14 @@ public class RobotMoveMode {
 				LCD.clear(4);
 			}
 			
+			//TODO transférer sens virage dans le Main
 			//Si "orange" 
-			else if ((rgb[0]>0.11 && rgb[0]<0.2) && (rgb[1]>0.04 && rgb[1]<0.08 ) && (rgb[2]>0.002 && rgb[2]<0.08 )) {
-				compteurNoir=1;
-				compteurBlanc=1;
-				motorController.init();
-
+			/*else if ((rgb[0]>0.11 && rgb[0]<0.2) && (rgb[1]>0.04 && rgb[1]<0.08 ) && (rgb[2]>0.002 && rgb[2]<0.08 )) {
 				if(compteurVirage<0)
 					LCD.drawString("Right", 0, 4, false);
 				else if(compteurVirage>0)
 					LCD.drawString("Left ", 0, 4, false);
-			}
+			}*/
 		//}
 	}
 	

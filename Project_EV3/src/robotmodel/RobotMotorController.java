@@ -14,7 +14,7 @@ public class RobotMotorController
 {
 	private EV3LargeRegulatedMotor leftMotor;
 	private EV3LargeRegulatedMotor rightMotor;
-	private float vitesseDeBase =250.0f;
+	private float vitesseDeBase =330.0f;
 	
 	public RobotMotorController()
 	{
