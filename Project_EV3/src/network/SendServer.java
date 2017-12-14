@@ -10,14 +10,16 @@ import java.io.IOException;
 
 public class SendServer {
 	
-	public SendServer() {
-		// TODO Auto-generated constructor stub
-	}
+//	public static SendServer() {
+//		// TODO Auto-generated constructor stub
+//	}
 	
-	public void dataToSend(int pID, int pPosition, int pSpeed)
+	public static void dataToSend(int pID, int pSpeed, int pPosition)
 	{
 		try {
-			CentralizedSync.sendPos( Integer.toString(pID) + "\r\n" + Integer.toString(pPosition) + "\r\n" +  Integer.toString(pSpeed) );
+			CentralizedSync.sendPos( Integer.toString(pID) + "\r\n" 
+									+ Integer.toString(pPosition) + "\r\n" 
+									+ Integer.toString(pSpeed) );
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
