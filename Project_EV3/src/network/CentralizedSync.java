@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 
+import robotmodel.Robot;
+
 /**
  * 
  * @author promet
@@ -12,13 +14,18 @@ import java.nio.ByteBuffer;
 
 public class CentralizedSync {	
 
-	public static void sendPos(float pPosition) throws SocketException, IOException
+	/*
+	 * Listner to get acquitment from server for ValidServer
+	 */
+	public static void addRobotRcvListner(Robot myRobot) throws IOException
 	{
-		byte[] tmp = ByteBuffer.allocate(4).putFloat(pPosition).array();
-		
-		BroadcastManager.getInstance().broadcast(tmp);
-	}
+		RobotRcvListner myRcvListner = new RobotRcvListner(myRobot);
+		BroadcastReceiver.getInstance().addListener(myRcvListner);
+	}	
 
+	/*
+	 * Send robots information as a String
+	 */
 	public static void sendPos(String DataToSend) throws SocketException, IOException
 	{
 		byte[] tmp = DataToSend.getBytes();

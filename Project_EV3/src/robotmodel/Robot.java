@@ -46,7 +46,7 @@ public class Robot{
 	/*
 	 * Setter ValidServer
 	 */
-	public void getValidServer(boolean pBoolean)
+	public void SetValidServer(boolean pBoolean)
 	{
 		this.ValidServer = pBoolean;
 	}	

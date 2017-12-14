@@ -13,8 +13,7 @@ public class Listener implements BroadcastListener {
 		
 	}
 	
-	@Override
-	
+	@Override	
 	public void onBroadcastReceived(byte[] message) {
 		data = ByteBuffer.wrap(message).toString();
 		LCD.clear();
