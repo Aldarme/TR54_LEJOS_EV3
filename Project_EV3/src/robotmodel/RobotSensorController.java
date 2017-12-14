@@ -19,16 +19,18 @@ public class RobotSensorController
 	private int avrgCount = 0;
 	
 	//Color sensor
-	EV3ColorSensor  myColorSensor = new EV3ColorSensor(SensorPort.S3);
+	EV3ColorSensor  myColorSensor;
 	SampleProvider rgbSampler;
 
 	//Distance sensor
-	EV3UltrasonicSensor myDistSensor = new EV3UltrasonicSensor(SensorPort.S2);
+	EV3UltrasonicSensor myDistSensor;
 	SampleProvider distSampler;
 	
 	public RobotSensorController() {
+		myColorSensor = new EV3ColorSensor(SensorPort.S3);
+		//myDistSensor = new EV3UltrasonicSensor(SensorPort.S2);
 		rgbSampler = myColorSensor.getRGBMode();
-		distSampler = myDistSensor.getDistanceMode();
+		//distSampler = myDistSensor.getDistanceMode();
 	}
 	
 	/*

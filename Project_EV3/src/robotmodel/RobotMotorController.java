@@ -12,13 +12,13 @@ import lejos.robotics.RegulatedMotor;
  */
 public class RobotMotorController
 {
-	private RegulatedMotor leftMotor;
-	private RegulatedMotor rightMotor;
-	private float vitesseDeBase;
+	private EV3LargeRegulatedMotor leftMotor;
+	private EV3LargeRegulatedMotor rightMotor;
+	private float vitesseDeBase =250.0f;
 	
 	public RobotMotorController()
 	{
-		this.leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);	//Define left motor on Port B
+		this.leftMotor = new EV3LargeRegulatedMotor(MotorPort.B);//Define left motor on Port B
 		this.rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);	//Define right motor on Port C
 	}
 	
@@ -34,10 +34,10 @@ public class RobotMotorController
 	/**
 	 * Initialization of speed and state of robot (move forward)
 	 */
-	public void init(float vitesse){
-		vitesseDeBase = vitesse;
-		this.leftMotor.setSpeed(Float.floatToIntBits(vitesse));
-		this.rightMotor.setSpeed(Float.floatToIntBits(vitesse));
+	public void init(){
+		
+		this.leftMotor.setSpeed(vitesseDeBase);
+		this.rightMotor.setSpeed(vitesseDeBase);
 		forward();
 	}
 	
@@ -69,8 +69,8 @@ public class RobotMotorController
 	 * @param ratio this parameter decline the speed of the right motor in relation to the speed of the left motor
 	 */
 	public void rotateRightProgressive(float ratio) {		
-		this.rightMotor.setSpeed(Float.floatToIntBits(vitesseDeBase*ratio));
-		this.leftMotor.setSpeed(Float.floatToIntBits(vitesseDeBase));
+		this.rightMotor.setSpeed(vitesseDeBase*ratio);
+		this.leftMotor.setSpeed(vitesseDeBase);
 		forward();
 	}
 	
@@ -79,8 +79,8 @@ public class RobotMotorController
 	 * @param ratio this parameter decline the speed of the left motor in relation to the speed of the right motor
 	 */
 	public void rotateLeftProgressive(float ratio) {
-		this.rightMotor.setSpeed(Float.floatToIntBits(vitesseDeBase));
-		this.leftMotor.setSpeed(Float.floatToIntBits(vitesseDeBase*ratio));
+		this.rightMotor.setSpeed(vitesseDeBase);
+		this.leftMotor.setSpeed(vitesseDeBase*ratio);
 		forward();
 	}
 	

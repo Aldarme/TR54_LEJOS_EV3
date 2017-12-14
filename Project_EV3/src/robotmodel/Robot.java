@@ -18,8 +18,8 @@ public class Robot{
 	private Position robotPos;
 	private boolean ValidServer;
 	
-	private RobotMotorController motorController;
-	private RobotSensorController sensorController;
+	public RobotMotorController motorController;
+	public RobotSensorController sensorController;
 	public RobotMoveMode moveModeController;
 	
 	/*
@@ -30,6 +30,9 @@ public class Robot{
 		this.ID = pID;
 		this.robotPos = Position.SORTIE;
 		this.ValidServer = false;
+		sensorController = new RobotSensorController();
+		motorController = new RobotMotorController();
+		moveModeController = new RobotMoveMode(sensorController,motorController);
 	}
 	
 	/*

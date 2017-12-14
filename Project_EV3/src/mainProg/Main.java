@@ -1,6 +1,7 @@
 package mainProg;
 
 import lejos.hardware.Button;
+import lejos.hardware.lcd.LCD;
 import robotmodel.*;
 import threads.*;
 
@@ -14,7 +15,6 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException
 	{
-		final int button = Button.waitForAnyPress();
 
 		//Init my robot with an ID
 		Robot myRobot = new Robot(0);
@@ -28,10 +28,30 @@ public class Main {
 		Thread threadStock = new Thread(new ThreadStockZone(myRobot));
 		Thread threadConflict = new Thread(new ThreadConflictZone(myRobot));
 		Thread threadSortie = new Thread(new ThreadConflictZone(myRobot));
+
+		LCD.drawString("Hello my friend!!!", 0, 1);
+		LCD.drawString("Commands:", 0, 2);
+		LCD.drawString("Right : server", 0, 3);
+		LCD.drawString("Left : pilote", 0, 4);
+		
+		final int button = Button.waitForAnyPress();
 		
 		if(button == Button.ID_RIGHT) {
+			LCD.clear();
 			//server();
-		} else if(button == Button.ID_LEFT) {
+		} 
+		else if(button == Button.ID_UP)
+		{
+			for(;;) {
+				LCD.clear();
+				LCD.drawString(Float.toString(myRobot.sensorController.getRgbSampler()[0]), 0, 0, false);
+				LCD.drawString(Float.toString(myRobot.sensorController.getRgbSampler()[1]), 0, 1, false);
+				LCD.drawString(Float.toString(myRobot.sensorController.getRgbSampler()[2]), 0, 2, false);
+			}
+		}
+		else if(button == Button.ID_LEFT) {
+			LCD.clear();
+			myRobot.motorController.init();
 			
 			for(;;)
 			{
@@ -43,35 +63,37 @@ public class Main {
 				/*
 				 * Orange mark detection
 				 */
-				if ((myRobot.getColorSensor()[0] > orangeTab[0] && 	myRobot.getColorSensor()[0] <  orangeTab[1]	)//get real value
-					&& (myRobot.getColorSensor()[1] > orangeTab[2] && myRobot.getColorSensor()[1] <  orangeTab[3]	)	//of ORANGE RGB
-					&& (myRobot.getColorSensor()[2] > orangeTab[4] && myRobot.getColorSensor()[2] <  orangeTab[5]	) 
-					)
-				{
-					//Start the Thread for Entree Zone
-					threadEntree.start();
-					threadEntree.join();
-					
-					if(myRobot.getValidServer() == false)
-					{
-						myRobot.StopMotor();
-						
-						//Start the Thread for Stock Zone
-						threadStock.start();
-						threadStock.join();
-						
-						//Wait that "ValidServer" was update from false to true
-						while(myRobot.getValidServer() == false){}					
-					}
-					
-					//Start the Thread for Conflict Zone
-					threadConflict.start();				
-					threadConflict.join();
-					
-					//Start the Thread for Sortie Zone
-					threadSortie.start();	
-					threadSortie.join();
-				}
+//				if ((myRobot.getColorSensor()[0] > orangeTab[0] && 	myRobot.getColorSensor()[0] <  orangeTab[1]	)//get real value
+//					&& (myRobot.getColorSensor()[1] > orangeTab[2] && myRobot.getColorSensor()[1] <  orangeTab[3]	)	//of ORANGE RGB
+//					&& (myRobot.getColorSensor()[2] > orangeTab[4] && myRobot.getColorSensor()[2] <  orangeTab[5]	) 
+//					)
+//				{
+//					//Start the Thread for Entree Zone
+//					threadEntree.start();
+//					threadEntree.join();
+//					
+//					if(myRobot.getValidServer() == false)
+//					{
+//						myRobot.StopMotor();
+//						
+//						//Start the Thread for Stock Zone
+//						threadStock.start();
+//						threadStock.join();
+//						
+//						//Wait that "ValidServer" was update from false to true
+//						while(myRobot.getValidServer() == false){}					
+//					}
+//					
+//					//Start the Thread for Conflict Zone
+//					threadConflict.start();				
+//					threadConflict.join();
+//					
+//					//Start the Thread for Sortie Zone
+//					threadSortie.start();	
+//					threadSortie.join();
+//				}
+				
+				//Thread.sleep(100);
 			}
 		}
 	}
