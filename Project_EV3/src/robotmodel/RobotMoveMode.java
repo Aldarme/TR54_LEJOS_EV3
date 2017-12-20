@@ -47,61 +47,66 @@ public class RobotMoveMode {
 	 * Function followLine 
 	 */
 	
-	public void followLine() {
+	public int followLine(int pCurve) {
 		
-		sensorController.getColor();
+	sensorController.getColor();
 
-		//Méthode numéro 2 si noir tourner à Gauche si blanc tourner à droite
-		
+	//Mï¿½thode numï¿½ro 2 si noir tourner ï¿½ Gauche si blanc tourner ï¿½ droite
+	
+	rgb = sensorController.getRgbSampler();
+	
+				//Ecriture couleur renvoyï¿½e
+	LCD.drawString("RGB : ", 0, 0, false);
+	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
+	//tester distance du robot devant !
+	//Si noir
+	if(sensorController.getDist()>distanceMin)
+	{			
 		rgb = sensorController.getRgbSampler();
 		
-					//Ecriture couleur renvoyée
+					//Ecriture couleur renvoyï¿½e
 		LCD.drawString("RGB : ", 0, 0, false);
 		LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
 		LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
 		LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
-		LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
-		//tester distance du robot devant !
+		
 		//Si noir
-		if(sensorController.getDist()>distanceMin) {
-			if(rgb[0]<= 0.06 && rgb[1]<= 0.06 && rgb[2]<=0.06) {
-				compteurBlanc=1;
-				motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
-				compteurNoir++;
-				compteurVirage++;
-			}
-			
-			//Si blanc
-			else if(rgb[0]>0.06 && rgb[1]>0.06 && rgb[2]>0.06){
-				compteurNoir=1;
-				motorController.rotateRightProgressive((float)Math.pow(ratioD, compteurBlanc));
-				compteurBlanc++;
-				compteurVirage--;
-			}
-			
-			//Si "bleu" 
-			//Else et non else if car après s'être arrêté le robot ne se retrouvait dans aucun des cas et restait donc arrêté
-			//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
-			else {
-				compteurNoir=1;
-				compteurBlanc=1;
-				motorController.init();
-				compteurVirage=0;
-				LCD.clear(4);
-			}
-			
-			//TODO transférer sens virage dans le Main
-			//Si "orange" 
-			/*else if ((rgb[0]>0.11 && rgb[0]<0.2) && (rgb[1]>0.04 && rgb[1]<0.08 ) && (rgb[2]>0.002 && rgb[2]<0.08 )) {
-				if(compteurVirage<0)
-					LCD.drawString("Right", 0, 4, false);
-				else if(compteurVirage>0)
-					LCD.drawString("Left ", 0, 4, false);
-			}*/
+
+		if(rgb[0]<= 0.06 && rgb[1]<= 0.06 && rgb[2]<=0.06) {
+			compteurBlanc=1;
+			motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
+			compteurNoir++;
+			compteurVirage++;
 		}
+		
+		//Si blanc
+		else if(rgb[0]>0.06 && rgb[1]>0.06 && rgb[2]>0.06){
+			compteurNoir=1;
+			motorController.rotateRightProgressive((float)Math.pow(ratioD, compteurBlanc));
+			compteurBlanc++;
+			compteurVirage--;
+		}
+		
+		//Si "bleu" 
+		//Else et non else if car aprï¿½s s'ï¿½tre arrï¿½tï¿½ le robot ne se retrouvait dans aucun des cas et restait donc arrï¿½tï¿½
+		//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
 		else {
-			motorController.stop();
+			compteurNoir=1;
+			compteurBlanc=1;
+			motorController.init();
+			compteurVirage=0;
+			LCD.clear(4);
 		}
+		
+		return 1; //Success
+	}
+	else {
+		motorController.stop();
+	}
+	return 0;	//Fail
 	}
 	
 	

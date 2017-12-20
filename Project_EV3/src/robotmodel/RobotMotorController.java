@@ -107,27 +107,38 @@ public class RobotMotorController
 		this.rightMotor.setSpeed( (int) (pSpeed / 100f * this.rightMotor.getMaxSpeed()) );
 	}
 	
-	float getMaxSpeedG()
+	public float getMaxSpeedG()
 	{
 		return this.leftMotor.getMaxSpeed();		 
 	}
 	
-	float getMaxSpeedD()
+	public float getMaxSpeedD()
 	{
 		return this.rightMotor.getMaxSpeed();		 
 	}
 	
-	int getCurrentSpeed()
+	public int getCurrentSpeed()
 	
 	{
 		 int avrgSpeed = (this.leftMotor.getSpeed() +  this.rightMotor.getSpeed()) / 2; 
 		 return avrgSpeed;
 	}
 	
+	public int getTachy()
+	{
+		this.leftMotor.resetTachoCount();
+		return this.leftMotor.getTachoCount();
+	}
+	
+	public void tachyReset()
+	{
+		this.leftMotor.resetTachoCount();
+	}
+	
 	/*
 	 * Stop robot's motors
 	 */
-	void stop()
+	public void stop()
 	{
 		this.leftMotor.stop(true);
 		this.rightMotor.stop();

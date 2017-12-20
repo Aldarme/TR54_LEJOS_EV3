@@ -17,6 +17,7 @@ public class Robot{
 	private int ID;
 	private Position robotPos;
 	private boolean ValidServer;
+	private int currentCurv;
 	
 	public RobotMotorController motorController;
 	public RobotSensorController sensorController;
@@ -56,6 +57,22 @@ public class Robot{
 	 */
 	public int getId() {
 		return this.ID;
+	}
+	
+	/*
+	 * set current curve
+	 */
+	public void setCurCurve(int pCurve)
+	{
+		this.currentCurv = pCurve;
+	}
+	
+	/*
+	 * get current curve
+	 */
+	public int getCurCurve()
+	{
+		return this.currentCurv;
 	}
 	
 	/*

@@ -24,8 +24,14 @@ public class ThreadEntreeZone implements Runnable {
 		//send to the server, the current position
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
 										myThreadRobot.getSpeed(), 
-										myThreadRobot.getPosition() );
+										myThreadRobot.getPosition(),
+										myThreadRobot.getCurCurve()
+									  );
 		
-		myThreadRobot.nbrRotateWheel((float)(360*2));
+		myThreadRobot.motorController.tachyReset();
+		while(myThreadRobot.motorController.getTachy() < 1)
+		{
+			//On boucle			
+		}
 	}
 }

@@ -24,9 +24,15 @@ public class ThreadStockZone implements Runnable {
 		//send current position to the server
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
 										myThreadRobot.getSpeed(), 
-										myThreadRobot.getPosition() );
+										myThreadRobot.getPosition(),
+										myThreadRobot.getCurCurve()
+									);
 		
-		myThreadRobot.nbrRotateWheel((float)(180));
+		myThreadRobot.motorController.tachyReset();
+		while(myThreadRobot.motorController.getTachy() < 1)
+		{
+			//On boucle			
+		}
 	}
 
 }

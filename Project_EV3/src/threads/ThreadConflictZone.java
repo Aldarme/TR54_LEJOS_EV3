@@ -12,6 +12,7 @@ import robotmodel.Robot;
 public class ThreadConflictZone implements Runnable {
 	
 	private Robot myThreadRobot;
+	int dist = 2;
 	
 	public ThreadConflictZone(Robot pRobot) {
 		myThreadRobot = pRobot;
@@ -25,9 +26,15 @@ public class ThreadConflictZone implements Runnable {
 		//send current position to the server
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
 										myThreadRobot.getSpeed(), 
-										myThreadRobot.getPosition() );
+										myThreadRobot.getPosition(),
+										myThreadRobot.getCurCurve()
+									 );
 		
-		myThreadRobot.nbrRotateWheel((float)(360*4));
+		myThreadRobot.motorController.tachyReset();
+		while(myThreadRobot.motorController.getTachy() < 3)
+		{
+			//On boucle			
+		}
 	}
 
 }
