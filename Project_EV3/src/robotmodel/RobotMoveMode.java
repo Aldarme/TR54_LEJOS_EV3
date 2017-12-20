@@ -26,6 +26,7 @@ public class RobotMoveMode {
 	private	float currentSpeed = 0;
 	private float WifiSpeedrcv = 0;
 	private float WifiSpeedsend = 0;
+	private float distanceMin=0.15f; //meter
 
 	private int compteurBlanc =1;
 	private int compteurNoir=1;
@@ -51,17 +52,18 @@ public class RobotMoveMode {
 		sensorController.getColor();
 
 		//Méthode numéro 2 si noir tourner à Gauche si blanc tourner à droite
-		//for(;;) {
-			
-			rgb = sensorController.getRgbSampler();
-			
-						//Ecriture couleur renvoyée
-			LCD.drawString("RGB : ", 0, 0, false);
-			LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-			LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-			LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
-			
-			//Si noir
+		
+		rgb = sensorController.getRgbSampler();
+		
+					//Ecriture couleur renvoyée
+		LCD.drawString("RGB : ", 0, 0, false);
+		LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+		LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+		LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+		LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
+		//tester distance du robot devant !
+		//Si noir
+		if(sensorController.getDist()>distanceMin) {
 			if(rgb[0]<= 0.06 && rgb[1]<= 0.06 && rgb[2]<=0.06) {
 				compteurBlanc=1;
 				motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
@@ -78,7 +80,9 @@ public class RobotMoveMode {
 			}
 			
 			//Si "bleu" 
-			else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
+			//Else et non else if car après s'être arrêté le robot ne se retrouvait dans aucun des cas et restait donc arrêté
+			//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
+			else {
 				compteurNoir=1;
 				compteurBlanc=1;
 				motorController.init();
@@ -94,7 +98,10 @@ public class RobotMoveMode {
 				else if(compteurVirage>0)
 					LCD.drawString("Left ", 0, 4, false);
 			}*/
-		//}
+		}
+		else {
+			motorController.stop();
+		}
 	}
 	
 	

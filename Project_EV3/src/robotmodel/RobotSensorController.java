@@ -28,9 +28,9 @@ public class RobotSensorController
 	
 	public RobotSensorController() {
 		myColorSensor = new EV3ColorSensor(SensorPort.S3);
-		//myDistSensor = new EV3UltrasonicSensor(SensorPort.S2);
+		myDistSensor = new EV3UltrasonicSensor(SensorPort.S2);
 		rgbSampler = myColorSensor.getRGBMode();
-		//distSampler = myDistSensor.getDistanceMode();
+		distSampler = myDistSensor.getDistanceMode();
 	}
 	
 	/*
