@@ -85,16 +85,20 @@ public class Main {
 					threadEntree.start();
 					threadEntree.join();
 					
+					//Start the Thread for Stock Zone
+					threadStock.start();
+					threadStock.join();
+					
 					if(myRobot.getValidServer() == false)
 					{
-						myRobot.StopMotor();
-						
-						//Start the Thread for Stock Zone
-						threadStock.start();
-						threadStock.join();
+						myRobot.StopMotor();						
 						
 						//Wait that "ValidServer" was update from false to true
-						while(myRobot.getValidServer() == false){}					
+						while(myRobot.getValidServer() == false){}
+						
+						//restart engins
+						myRobot.motorController.init();
+						
 					}
 					
 					//Start the Thread for Conflict Zone

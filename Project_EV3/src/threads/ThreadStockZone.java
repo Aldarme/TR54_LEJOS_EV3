@@ -31,7 +31,7 @@ public class ThreadStockZone implements Runnable {
 		myThreadRobot.motorController.tachyReset();
 		while(myThreadRobot.motorController.getTachy() < 1)
 		{
-			//On boucle			
+			//On boucle
 		}
 	}
 

@@ -51,23 +51,24 @@ public class RobotMoveMode {
 		
 	sensorController.getColor();
 
-	//M�thode num�ro 2 si noir tourner � Gauche si blanc tourner � droite
+	//Methode numero 2 si noir tourner a Gauche si blanc tourner a droite
 	
 	rgb = sensorController.getRgbSampler();
 	
-				//Ecriture couleur renvoy�e
+	//Ecriture couleur renvoy�e
 	LCD.drawString("RGB : ", 0, 0, false);
 	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
 	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
 	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
 	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
+	
 	//tester distance du robot devant !
 	//Si noir
 	if(sensorController.getDist()>distanceMin)
 	{			
 		rgb = sensorController.getRgbSampler();
 		
-					//Ecriture couleur renvoy�e
+		//Ecriture couleur renvoy�e
 		LCD.drawString("RGB : ", 0, 0, false);
 		LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
 		LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
