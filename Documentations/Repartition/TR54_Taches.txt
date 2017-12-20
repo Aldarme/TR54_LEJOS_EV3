@@ -1,5 +1,4 @@
 ﻿NuttinGo
-	- Construction sequence de passage
 	- Couleur de la diode en fonction de la position dans la séquence :
 		- 1 : Vert
 		- 2 : Orange
@@ -14,10 +13,11 @@
 
 	
 Val
-	- Transmission de la séquence de passage (Serveur -> Robots) :
+	- Transmission de la séquence de passage (Serveur -> Robots) :				-OK
 		- ID Robot (ayant envoyé une requete)
 		- Position
 		- Vitesse
+	- Construction sequence de passage							-OK
 
 
 Toto
