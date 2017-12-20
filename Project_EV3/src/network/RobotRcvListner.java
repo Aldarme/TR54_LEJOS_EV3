@@ -24,6 +24,8 @@ public class RobotRcvListner implements BroadcastListener{
 		String subString[] = lstnerValidServer.split(Delimiter);
 		
 		int size = (subString.length-2)/3;
+
+		int rang = -1;
 		
 		if(subString[0] == "server")
 		{
@@ -33,7 +35,25 @@ public class RobotRcvListner implements BroadcastListener{
 				{
 					//Robot could move across conflict zone
 					this.myRobot.SetValidServer(true);
+					rang = i;
 				}
+			}
+			switch (rang)
+			{
+			  case -1:
+				  if(this.myRobot.getPosition()==1 ||this.myRobot.getPosition()==0)
+					  this.myRobot.setLedMode(5);
+				  else
+					  this.myRobot.setLedMode(0);
+				  break;
+			  case 0:
+				  this.myRobot.setLedMode(1);
+				  break;
+			  case 1:
+				  this.myRobot.setLedMode(3);
+				  break;
+			  default:
+				  this.myRobot.setLedMode(2);            
 			}
 		}
 		

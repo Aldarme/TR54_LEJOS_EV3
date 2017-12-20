@@ -1,5 +1,7 @@
 package robotmodel;
 
+import lejos.hardware.BrickFinder;
+import lejos.hardware.LED;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.MotorPort;
 import lejos.hardware.port.SensorPort;
@@ -18,6 +20,7 @@ public class Robot{
 	private Position robotPos;
 	private boolean ValidServer;
 	private int currentCurv;
+	private LED led;
 	
 	public RobotMotorController motorController;
 	public RobotSensorController sensorController;
@@ -34,6 +37,7 @@ public class Robot{
 		sensorController = new RobotSensorController();
 		motorController = new RobotMotorController();
 		moveModeController = new RobotMoveMode(sensorController,motorController);
+		this.led = BrickFinder.getDefault().getLED();
 	}
 	
 	/*
@@ -135,7 +139,15 @@ public class Robot{
 	{
 		this.robotPos = pPosition;
 	}
-	
+
+	/*
+	 * setter LED color
+	 * mode = 1: green, 2: red, 3: orange, 5: blinking red  0: nothing !!!!
+	 */
+	public void setLedMode(int mode)
+	{
+		led.setPattern(mode);
+	}
 	
 
 }
