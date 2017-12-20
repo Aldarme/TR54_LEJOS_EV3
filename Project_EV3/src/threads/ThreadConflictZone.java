@@ -31,7 +31,7 @@ public class ThreadConflictZone implements Runnable {
 									 );
 		
 		myThreadRobot.motorController.tachyReset();
-		while(myThreadRobot.motorController.getTachy() < 3)
+		while(myThreadRobot.motorController.getTachy() < 360)
 		{
 			//On boucle			
 		}

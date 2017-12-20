@@ -35,13 +35,6 @@ public class RobotRcvListner implements BroadcastListener{
 					this.myRobot.SetValidServer(true);
 				}
 			}
-		}
-		
-		
-		
-		
-		
-		
-		
+		}		
 	}
 }
