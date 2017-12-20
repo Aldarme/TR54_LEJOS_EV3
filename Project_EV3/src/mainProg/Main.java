@@ -1,7 +1,11 @@
 package mainProg;
 
+import java.io.IOException;
+import java.net.SocketException;
+
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
+import network.ReceiveServer;
 import robotmodel.*;
 import threads.*;
 
@@ -13,11 +17,12 @@ import threads.*;
 
 public class Main {
 
-	public static void main(String[] args) throws InterruptedException
+	public static void main(String[] args) throws InterruptedException, IOException
 	{
 
 		//Init my robot with an ID
 		Robot myRobot = new Robot(0);
+		ReceiveServer myServer = new ReceiveServer();
 		
 		//int array to test orange rgb value
 		//rgb[0]>0.11 && rgb[0]<0.2) && (rgb[1]>0.04 && rgb[1]<0.08 ) && (rgb[2]>0.002 && rgb[2]<0.08 
@@ -38,7 +43,8 @@ public class Main {
 		
 		if(button == Button.ID_RIGHT) {
 			LCD.clear();
-			//server();
+			LCD.drawString("Server mode", 0, 1);
+			myServer.mainServer();
 		}
 		else if(button == Button.ID_LEFT) {
 			LCD.clear();
