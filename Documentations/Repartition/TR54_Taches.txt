@@ -55,13 +55,13 @@ Neid02
 
 -----------------------------------------A faire----------------------------------------------
 		
-- Maintien de la distance de sécurité entre 2 robots						(Déjà fait)
+- Maintien de la distance de sécurité entre 2 robots									-TODO (Déjà fait)
 
 
-- Envoi de la requete de passage (Robot -> Serveur)
+- Envoi de la requete de passage (Robot -> Serveur)									-OK
 
 
-- Arret du robot avant l'intersection s'il n'est pas dans la séquence de passage
+- Arret du robot avant l'intersection s'il n'est pas dans la séquence de passage					-OK
 
 
-- Synchronisation de la vitesse avec le robot précédent (franchir l'intersection une fois que celui devant soit sorti).
+- Synchronisation de la vitesse avec le robot précédent (franchir l'intersection une fois que celui devant soit sorti).	-TODO
