@@ -11,13 +11,15 @@ public class RobotData {
 	private int location;
 	private int speed;
 	private double time;
+	private int rotation;	//Right : 0 or Left : 1
 	
-	public RobotData(int id, int location, int speed, double time)
+	public RobotData(int id, int location, int speed, double time, int rotation)
 	{
 		this.id = id;
 		this.location = location;
 		this.speed = speed;
 		this.time = time;
+		this.rotation = rotation;
 	}
 	
 	public int getId() {
@@ -46,5 +48,13 @@ public class RobotData {
 
 	public void setTime(int time) {
 		this.time = time;
+	}
+	
+	public int getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(int rotation) {
+		this.rotation = rotation;
 	}
 }
