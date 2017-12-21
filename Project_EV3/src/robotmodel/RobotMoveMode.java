@@ -35,7 +35,7 @@ public class RobotMoveMode {
 	private int compteurVirage=0;
 	float rgb[]= new float[3];
 	float ratioG = 0.95f;
-	float ratioD = 0.95f;
+	float ratioD = 0.96f;
 
 	RobotMotorController motorController;
 	RobotSensorController sensorController;
@@ -99,7 +99,7 @@ public class RobotMoveMode {
 				}
 				
 				//Si blanc
-				else if(rgb[0]>0.06 && rgb[1]>0.06 && rgb[2]>0.06){
+				else if(rgb[0]>0.08 && rgb[1]>0.08 && rgb[2]>0.08){
 					stateBeforeStop=2;
 					compteurNoir=1;
 					motorController.rotateRightProgressive((float)Math.pow(ratioD, compteurBlanc));
@@ -110,7 +110,7 @@ public class RobotMoveMode {
 				//Si "bleu" 
 				//Else et non else if car apr�s s'�tre arr�t� le robot ne se retrouvait dans aucun des cas et restait donc arr�t�
 				//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
-				else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.07 && rgb[1]<0.12 ) && (rgb[2]>0.10 && rgb[2]<14 ))
+				else if ((rgb[0]>0.0264 && rgb[0]<0.123 ) && (rgb[1]>0.059 && rgb[1]<0.16 ) && (rgb[2]>0.105 && rgb[2]<151 ))
 				{			
 					stateBeforeStop=3;
 			//			//on evite le cas du orange
