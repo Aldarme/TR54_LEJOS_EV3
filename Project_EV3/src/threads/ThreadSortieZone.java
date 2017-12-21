@@ -1,5 +1,6 @@
 package threads;
 
+import lejos.hardware.lcd.LCD;
 import robotmodel.Position;
 import robotmodel.Robot;
 
@@ -29,10 +30,12 @@ public class ThreadSortieZone implements Runnable {
 										myThreadRobot.getCurCurve()
 									);
 
-		myThreadRobot.motorController.tachyReset();
-		while(myThreadRobot.motorController.getTachy() < 1)
+		//.myThreadRobot.motorController.tachyReset();
+		
+		while(myThreadRobot.motorController.getTachy() < 550000)
 		{
-			//On boucle			
+			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);	
 		}
+		
 	}
 }

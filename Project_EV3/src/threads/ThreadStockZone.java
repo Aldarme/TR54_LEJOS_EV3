@@ -29,9 +29,10 @@ public class ThreadStockZone implements Runnable {
 									);
 		
 		myThreadRobot.motorController.tachyReset();
-		while(myThreadRobot.motorController.getTachy() < 1)
+		
+		while(myThreadRobot.motorController.getTachy() < 180)
 		{
-			//On boucle
+			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);		
 		}
 	}
 

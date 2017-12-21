@@ -25,7 +25,7 @@ public class RobotMotorController
 	/*
 	 * Move forward
 	 */
-	void forward()
+	public void forward()
 	{
 		this.leftMotor.forward();
 		this.rightMotor.forward();
@@ -38,27 +38,27 @@ public class RobotMotorController
 		
 		this.leftMotor.setSpeed(vitesseDeBase);
 		this.rightMotor.setSpeed(vitesseDeBase);
-		forward();
+		//forward();
 	}
 	
 	/*
 	 * Robot rotate on itself of specify angle
 	 * BEWARE: rotate function delete all brevious order of movement
 	 */
-	void rotate(float angle)
+	public void rotate(float angle)
 	{
 		float rotation = angle * 2.33f;
 		this.leftMotor.rotate((int)angle, true);
 		this.rightMotor.rotate((int) angle);
 	}
 	
-	void rotateLeft(float angle)
+	public void rotateLeft(float angle)
 	{
 		float rotation = angle * 2.33f;
 		this.rightMotor.rotate((int) angle, true);
 	}
 	
-	void rotateRight(float angle)
+	public void rotateRight(float angle)
 	{
 		float rotation = angle * 2.33f;
 		this.leftMotor.rotate((int)angle, true);
@@ -71,7 +71,7 @@ public class RobotMotorController
 	public void rotateRightProgressive(float ratio) {		
 		this.rightMotor.setSpeed(vitesseDeBase*ratio);
 		this.leftMotor.setSpeed(vitesseDeBase);
-		forward();
+		//forward();
 	}
 	
 	/**
@@ -81,9 +81,18 @@ public class RobotMotorController
 	public void rotateLeftProgressive(float ratio) {
 		this.rightMotor.setSpeed(vitesseDeBase);
 		this.leftMotor.setSpeed(vitesseDeBase*ratio);
-		forward();
+		//forward();
 	}
 	
+	/**
+	 *  This function ask to robot to rotate forward
+	 * @param ratio this parameter between [0 ; 1]
+	 */
+	public void rotateBoth(float ratio) {
+		this.rightMotor.setSpeed(vitesseDeBase*ratio);
+		this.leftMotor.setSpeed(vitesseDeBase*ratio);
+		forward();
+	}
 	
 	/*
 	 * set speed on left && right motor by multiplying a ceof on ( LeftMotorMaxSpeed && RightMotorMaxSpeed)
@@ -126,7 +135,6 @@ public class RobotMotorController
 	
 	public int getTachy()
 	{
-		this.leftMotor.resetTachoCount();
 		return this.leftMotor.getTachoCount();
 	}
 	
@@ -140,7 +148,7 @@ public class RobotMotorController
 	 */
 	public void stop()
 	{
-		this.leftMotor.stop(true);
+		this.leftMotor.stop();
 		this.rightMotor.stop();
 	}
 }

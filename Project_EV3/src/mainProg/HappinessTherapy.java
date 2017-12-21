@@ -14,7 +14,7 @@ import threads.*;
  * modify by ncarrion
  */
 
-public class Main {
+public class HappinessTherapy {
 
 	public static void main(String[] args) throws InterruptedException, IOException
 	{
@@ -37,7 +37,7 @@ public class Main {
 		LCD.drawString("Commands:", 0, 2);
 		LCD.drawString("Right : server", 0, 3);
 		LCD.drawString("Left : pilote", 0, 4);
-		
+				
 		final int button = Button.waitForAnyPress();
 		
 		if(button == Button.ID_RIGHT)
@@ -49,7 +49,7 @@ public class Main {
 		else if(button == Button.ID_LEFT)
 		{
 			LCD.clear();
-			myRobot.motorController.init();
+			myRobot.motorController.init();			
 			network.CentralizedSync.addRobotRcvListner(myRobot);
 			
 			//Activate followLine Thread
@@ -57,6 +57,10 @@ public class Main {
 			
 			for(;;)
 			{
+				myRobot.motorController.forward();
+//				LCD.drawString(Float.toString( myRobot.getColorSensor()[0] ) ,0, 0);
+//				LCD.drawString(Float.toString( myRobot.getColorSensor()[1] ) ,0, 1);
+//				LCD.drawString(Float.toString( myRobot.getColorSensor()[2] ) ,0, 2);
 				/*
 				 * Orange mark detection
 				 */
@@ -70,43 +74,60 @@ public class Main {
 					{
 						if(followLineData[1] < 0)
 						{
-							LCD.drawString("Right", 0, 4, false);
+							//LCD.drawString("Right", 0, 4, false);
 							myRobot.setCurCurve(followLineData[1]);
+							//LCD.drawString("curve1", 1, 1);
 						}
 						else if(followLineData[1] > 0)
 						{
-							LCD.drawString("Left ", 0, 4, false);
+							//LCD.drawString("Left ", 0, 4, false);
 							myRobot.setCurCurve(followLineData[1]);
+							//LCD.drawString("curve2", 1, 1);
 						}					
 					}					
 					
 					//Start the Thread for Entree Zone
 					threadEntree.run();//utiliser methode prof
 					
+					myRobot.StopMotor();
+					
 					//Start the Thread for Stock Zone
-					threadStock.run();
+					//threadStock.run();
 					
-					if(myRobot.getValidServer() == false)
-					{
-						myRobot.StopMotor();						
-						
-						//Wait that "ValidServer" was update from false to true
-						while(myRobot.getValidServer() == false){}
-						
-						//restart engins
-						myRobot.motorController.init();
-						
-					}
 					
-					//Start the Thread for Conflict Zone
-					threadConflict.run();
 					
-					//Start the Thread for Sortie Zone
-					threadSortie.run();
+//					if(myRobot.getValidServer() == false)
+//					{
+//						myRobot.StopMotor();
+//						LCD.drawString("motor stopped", 0, 1);
+//						
+//						//Wait that "ValidServer" was update from false to true
+//						while(myRobot.getValidServer() == false){}
+//						
+//						//restart engins
+//						myRobot.motorController.init();
+//						
+//					}
+//					
+//					//Start the Thread for Conflict Zone
+//					threadConflict.run();
+//					
+//					//Start the Thread for Sortie Zone
+//					threadSortie.run();
 				}
-				
-				//Thread.sleep(100);
+//				
+//				//Thread.sleep(100);
 			}
 		}
 	}
 }
+
+
+//on evite le cas du orange
+//if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)	//get real value
+//		&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)	//of ORANGE RGB
+//		&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
+//		)
+//{
+//	return 1;
+//}

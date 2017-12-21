@@ -56,11 +56,11 @@ public class RobotMoveMode {
 	rgb = sensorController.getRgbSampler();
 	
 	//Ecriture couleur renvoy�e
-	LCD.drawString("RGB : ", 0, 0, false);
-	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
-	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
+//	LCD.drawString("RGB : ", 0, 0, false);
+//	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+//	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+//	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+//	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
 	
 	//tester distance du robot devant !
 	//Si noir
@@ -69,10 +69,10 @@ public class RobotMoveMode {
 		rgb = sensorController.getRgbSampler();
 		
 		//Ecriture couleur renvoy�e
-		LCD.drawString("RGB : ", 0, 0, false);
-		LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-		LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-		LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+//		LCD.drawString("RGB : ", 0, 0, false);
+//		LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+//		LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+//		LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
 		
 		//Si noir
 
@@ -94,12 +94,21 @@ public class RobotMoveMode {
 		//Si "bleu" 
 		//Else et non else if car apr�s s'�tre arr�t� le robot ne se retrouvait dans aucun des cas et restait donc arr�t�
 		//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
-		else {
+		else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.07 && rgb[1]<0.12 ) && (rgb[2]>0.10 && rgb[2]<14 ))
+		{			
+//			//on evite le cas du orange
+//			if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)	//get real value
+//					&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)	//of ORANGE RGB
+//					&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
+//				)
+//			{
+//				return 1;
+//			}
 			compteurNoir=1;
 			compteurBlanc=1;
 			motorController.init();
 			compteurVirage=0;
-			LCD.clear(4);
+			//LCD.clear(4);
 		}
 		
 		return 1; //Success

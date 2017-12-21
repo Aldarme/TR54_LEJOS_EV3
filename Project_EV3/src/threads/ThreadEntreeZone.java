@@ -1,5 +1,6 @@
 package threads;
 
+import lejos.hardware.lcd.LCD;
 import robotmodel.*;
 
 /**
@@ -19,19 +20,21 @@ public class ThreadEntreeZone implements Runnable {
 	public void run()
 	{
 		//set current position of the robot
-		myThreadRobot.setPosition(Position.ENTREE);	
+		myThreadRobot.setPosition(Position.ENTREE);
 		
-		//send to the server, the current position
-		network.SendServer.dataToSend(	myThreadRobot.getId(), 
-										myThreadRobot.getSpeed(), 
-										myThreadRobot.getPosition(),
-										myThreadRobot.getCurCurve()
-									  );
-		
+		//send current position to the server
+		network.SendServer.dataToSend(myThreadRobot.getId(), 
+				myThreadRobot.getSpeed(), 
+				myThreadRobot.getPosition(),
+				myThreadRobot.getCurCurve()
+									);
+
 		myThreadRobot.motorController.tachyReset();
-		while(myThreadRobot.motorController.getTachy() < 360)
+		
+		while(myThreadRobot.motorController.getTachy() < 720)
 		{
-			//On boucle			
+			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
+			myThreadRobot.motorController.forward();
 		}
 	}
 }
