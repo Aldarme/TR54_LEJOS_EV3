@@ -27,6 +27,8 @@ public class RobotMoveMode {
 	private float WifiSpeedrcv = 0;
 	private float WifiSpeedsend = 0;
 	private float distanceMin=0.15f; //meter
+	private boolean rerunAfterStop = false;
+	private int stateBeforeStop=0; // 1 left rotation, 2 right rotation, 3 right through 
 
 	private int compteurBlanc =1;
 	private int compteurNoir=1;
@@ -48,67 +50,83 @@ public class RobotMoveMode {
 	 */
 	
 	public int followLine(int pCurve) {
-		if(sensorController.getDist()<distanceMin)
+		if(sensorController.getDist()<distanceMin) {
+			rerunAfterStop=true;
 			motorController.setSpeed(0);
+		}
 		else {
-			sensorController.getColor();
-		
-			//Methode numero 2 si noir tourner a Gauche si blanc tourner a droite
+			//the robot knows in which state he is after a stop because link to a detection of a closer obstacle
+			if(rerunAfterStop) {
+				rerunAfterStop=false;
+				if(stateBeforeStop==1)
+					motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
+				if(stateBeforeStop==2)
+					motorController.rotateRightProgressive((float)(Math.pow(ratioG, compteurNoir)));
+				if(stateBeforeStop==3)
+					motorController.init();
+			}else {
+				sensorController.getColor();
 			
-			rgb = sensorController.getRgbSampler();
+				//Methode numero 2 si noir tourner a Gauche si blanc tourner a droite
+				
+				rgb = sensorController.getRgbSampler();
+				
+				//Ecriture couleur renvoy�e
+			//	LCD.drawString("RGB : ", 0, 0, false);
+			//	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+			//	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+			//	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+			//	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
+				
+				//tester distance du robot devant !
+				//Si noir		
+				rgb = sensorController.getRgbSampler();
+				
+				//Ecriture couleur renvoy�e
+	//				LCD.drawString("RGB : ", 0, 0, false);
+	//				LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+	//				LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+	//				LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+				
+				//Si noir
 			
-			//Ecriture couleur renvoy�e
-		//	LCD.drawString("RGB : ", 0, 0, false);
-		//	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-		//	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-		//	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
-		//	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
-			
-			//tester distance du robot devant !
-			//Si noir		
-			rgb = sensorController.getRgbSampler();
-			
-			//Ecriture couleur renvoy�e
-//				LCD.drawString("RGB : ", 0, 0, false);
-//				LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-//				LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-//				LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
-			
-			//Si noir
-		
-			if(rgb[0]<= 0.06 && rgb[1]<= 0.06 && rgb[2]<=0.06) {
-				compteurBlanc=1;
-				motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
-				compteurNoir++;
-				compteurVirage++;
-			}
-			
-			//Si blanc
-			else if(rgb[0]>0.06 && rgb[1]>0.06 && rgb[2]>0.06){
-				compteurNoir=1;
-				motorController.rotateRightProgressive((float)Math.pow(ratioD, compteurBlanc));
-				compteurBlanc++;
-				compteurVirage--;
-			}
-			
-			//Si "bleu" 
-			//Else et non else if car apr�s s'�tre arr�t� le robot ne se retrouvait dans aucun des cas et restait donc arr�t�
-			//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
-			else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.07 && rgb[1]<0.12 ) && (rgb[2]>0.10 && rgb[2]<14 ))
-			{			
-		//			//on evite le cas du orange
-		//			if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)	//get real value
-		//					&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)	//of ORANGE RGB
-		//					&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
-		//				)
-		//			{
-		//				return 1;
-		//			}
-				compteurNoir=1;
-				compteurBlanc=1;
-				motorController.init();
-				compteurVirage=0;
-				//LCD.clear(4);
+				if(rgb[0]<= 0.06 && rgb[1]<= 0.06 && rgb[2]<=0.06) {
+					stateBeforeStop=1;
+					compteurBlanc=1;
+					motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
+					compteurNoir++;
+					compteurVirage++;
+				}
+				
+				//Si blanc
+				else if(rgb[0]>0.06 && rgb[1]>0.06 && rgb[2]>0.06){
+					stateBeforeStop=2;
+					compteurNoir=1;
+					motorController.rotateRightProgressive((float)Math.pow(ratioD, compteurBlanc));
+					compteurBlanc++;
+					compteurVirage--;
+				}
+				
+				//Si "bleu" 
+				//Else et non else if car apr�s s'�tre arr�t� le robot ne se retrouvait dans aucun des cas et restait donc arr�t�
+				//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
+				else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.07 && rgb[1]<0.12 ) && (rgb[2]>0.10 && rgb[2]<14 ))
+				{			
+					stateBeforeStop=3;
+			//			//on evite le cas du orange
+			//			if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)	//get real value
+			//					&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)	//of ORANGE RGB
+			//					&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
+			//				)
+			//			{
+			//				return 1;
+			//			}
+					compteurNoir=1;
+					compteurBlanc=1;
+					motorController.init();
+					compteurVirage=0;
+					//LCD.clear(4);
+				}
 			}
 		}
 	
