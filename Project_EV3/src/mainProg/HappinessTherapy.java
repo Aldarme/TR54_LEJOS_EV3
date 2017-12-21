@@ -89,34 +89,30 @@ public class HappinessTherapy {
 					//Start the Thread for Entree Zone
 					threadEntree.run();//utiliser methode prof
 					
-					myRobot.StopMotor();
-					
 					//Start the Thread for Stock Zone
-					//threadStock.run();
+					threadStock.run();
 					
+					if(myRobot.getValidServer() == false)
+					{
+						myRobot.StopMotor();
+						LCD.drawString("motor stopped", 0, 1);
+						
+						//Wait that "ValidServer" was update from false to true
+						while(myRobot.getValidServer() == false){}
+						
+						//restart engins
+						myRobot.motorController.init();
+						
+					}
 					
+					//Start the Thread for Conflict Zone
+					threadConflict.run();
 					
-//					if(myRobot.getValidServer() == false)
-//					{
-//						myRobot.StopMotor();
-//						LCD.drawString("motor stopped", 0, 1);
-//						
-//						//Wait that "ValidServer" was update from false to true
-//						while(myRobot.getValidServer() == false){}
-//						
-//						//restart engins
-//						myRobot.motorController.init();
-//						
-//					}
-//					
-//					//Start the Thread for Conflict Zone
-//					threadConflict.run();
-//					
-//					//Start the Thread for Sortie Zone
-//					threadSortie.run();
+					//Start the Thread for Sortie Zone
+					threadSortie.run();
 				}
-//				
-//				//Thread.sleep(100);
+				
+				//Thread.sleep(100);
 			}
 		}
 	}

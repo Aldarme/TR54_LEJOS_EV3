@@ -32,9 +32,10 @@ public class ThreadSortieZone implements Runnable {
 
 		//.myThreadRobot.motorController.tachyReset();
 		
-		while(myThreadRobot.motorController.getTachy() < 550000)
+		while(myThreadRobot.motorController.getTachy() < 360)
 		{
-			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);	
+			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
+			myThreadRobot.motorController.forward();
 		}
 		
 	}
