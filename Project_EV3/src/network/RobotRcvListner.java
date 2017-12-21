@@ -38,30 +38,6 @@ public class RobotRcvListner implements BroadcastListener{
 					rang = i;
 				}
 			}
-			switch (rang)
-			{
-			  case -1:
-				  if(this.myRobot.getPosition()==1 ||this.myRobot.getPosition()==0)
-					  this.myRobot.setLedMode(5);
-				  else
-					  this.myRobot.setLedMode(0);
-				  break;
-			  case 0:
-				  this.myRobot.setLedMode(1);
-				  break;
-			  case 1:
-				  this.myRobot.setLedMode(3);
-				  break;
-			  default:
-				  this.myRobot.setLedMode(2);            
-			}
-		}
-		
-		
-		
-		
-		
-		
-		
+		}		
 	}
 }

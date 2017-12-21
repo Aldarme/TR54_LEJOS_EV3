@@ -29,7 +29,7 @@ public class ThreadEntreeZone implements Runnable {
 									  );
 		
 		myThreadRobot.motorController.tachyReset();
-		while(myThreadRobot.motorController.getTachy() < 1)
+		while(myThreadRobot.motorController.getTachy() < 360)
 		{
 			//On boucle			
 		}
