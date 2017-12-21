@@ -90,7 +90,8 @@ public class RobotMoveMode {
 				
 				//Si noir
 			
-				if(rgb[0]<= 0.06 && rgb[1]<= 0.06 && rgb[2]<=0.06) {
+				if(rgb[0]<= 0.07 && rgb[1]<= 0.07 && rgb[2]<=0.07
+						) {
 					stateBeforeStop=1;
 					compteurBlanc=1;
 					motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
