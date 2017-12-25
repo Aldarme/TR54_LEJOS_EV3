@@ -43,7 +43,8 @@ public class HappinessTherapy {
 		if(button == Button.ID_RIGHT)
 		{
 			LCD.clear();
-			LCD.drawString("Server mode", 0, 1);
+			LCD.drawString("Server mode (test)", 0, 1);
+			network.CentralizedSync.addServerRcvListner(myServer);
 			myServer.mainServer();
 		}
 		else if(button == Button.ID_LEFT)

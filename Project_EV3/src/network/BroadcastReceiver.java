@@ -74,8 +74,10 @@ public class BroadcastReceiver implements AutoCloseable
 	/**
 	 * Fire the broadcast received event
 	 * @param message the raw message received
+	 * @throws IOException 
+	 * @throws SocketException 
 	 */
-	protected void fireBroadcastReceived(byte[] message) 
+	protected void fireBroadcastReceived(byte[] message) throws SocketException, IOException 
 	{
 		for(BroadcastListener listener : this.listeners)
 		{

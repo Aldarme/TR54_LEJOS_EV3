@@ -1,27 +1,26 @@
 package network;
 
+import java.io.IOException;
+import java.net.SocketException;
 import java.nio.ByteBuffer;
-
-import lejos.hardware.lcd.LCD;
-import network.BroadcastListener;
 
 public class Listener implements BroadcastListener {
 
-	private String data;
+	private ReceiveServer myServerListener;
 	
-	Listener()	{
-		
+	public Listener(ReceiveServer myServer)	{
+		this.myServerListener = myServer;
 	}
 	
 	@Override	
-	public void onBroadcastReceived(byte[] message) {
-		data = ByteBuffer.wrap(message).toString();
-		LCD.clear();
-		LCD.drawString(String.format("Data : ", data), 0, 2);
-	} 
-	
-	public String getData() {
-		return data;
+	public void onBroadcastReceived(byte[] message) throws SocketException, IOException {
+		String data = ByteBuffer.wrap(message).toString();
+		//data = new String(message);
+//		LCD.clear();
+//		LCD.drawString("Data : " + data, 0, 2);
+		System.out.println("Data : " + data);
+		
+		myServerListener.processData(data);
+		
 	}
-
 }

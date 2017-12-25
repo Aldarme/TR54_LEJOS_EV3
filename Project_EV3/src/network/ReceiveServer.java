@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+import java.util.Iterator;
+
 import lejos.hardware.lcd.LCD;
 import lejos.utility.Delay;
 import network.BroadcastReceiver;
@@ -12,11 +14,11 @@ import robotmodel.RobotData;
 
 public class ReceiveServer {
 
-	static BroadcastReceiver r;
-	static Listener l = new Listener();
+	/*static BroadcastReceiver r;
+	static Listener l = new Listener();*/
 	
-	static String data;
-	static int rId, rLocation, rSpeed, rRotation;
+	
+	static int rId, rLocation, rSpeed, rRotation = 0;
 	static int deltaTime = 5;
 	static double rTime;
 	static boolean found = false;
@@ -26,11 +28,12 @@ public class ReceiveServer {
 	
 	public void mainServer() throws IOException
 	{
-		r = BroadcastReceiver.getInstance();
-		r.addListener(l);
+		/*r = BroadcastReceiver.getInstance();
+		r.addListener(l);*/
+		
 		
 		while(true) {
-			LCD.drawString("Waiting for data", 0, 3);
+			/*LCD.drawString("Waiting for data", 0, 3);
 			Delay.msDelay(100);
 			
 			// Get the data from the robot
@@ -38,58 +41,72 @@ public class ReceiveServer {
 			
 			// If there are some new data
 			if (data != null){
-				LCD.drawString(String.format("Data : ", data), 0, 5);
+				LCD.drawString("Data : " + data, 0, 5);
+				Delay.msDelay(4000);
 				processData();
-			}			
+			}		*/	
 		}
 	}
 	
-	private static void updateServerAcquitment()
+	/*private static void updateServerAcquitment()
 	{
 		
-	}
+	}*/
 	
-	private static void processData() throws SocketException, IOException
+	public void processData(String Data) throws SocketException, IOException
 	{
 		String delim = "\r\n";
 		
-		//Get the values from the data received
-		String[] values = data.split(delim);
-		
-		rId = Integer.parseInt(values[0]);
-		rLocation = Integer.parseInt(values[1]);
-		rSpeed = Integer.parseInt(values[2]);
-		//Register system time when data are processed
-		rTime = System.nanoTime()*Math.pow(10,-9);
-		rRotation = Integer.parseInt(values[3]);
-		
-		updateRequestSequence();
+		if(Data != null)
+		{
+			System.out.println("Ca passe1");
+			//Get the values from the data received
+			String[] values = Data.split(delim);
+			
+			if(values[0] != "server")
+			{
+				System.out.println("Ca passe 2");
+				rId = Integer.parseInt(values[0]);
+				rLocation = Integer.parseInt(values[1]);
+				rSpeed = Integer.parseInt(values[2]);
+				//Register system time when data are processed
+				rTime = System.nanoTime()*Math.pow(10,-9);
+				//rRotation = Integer.parseInt(values[3]);
+				
+				updateRequestSequence();
+			}
+		}
 	}
 	
 	private static void updateRequestSequence() throws SocketException, IOException
 	{			
 		
 		// Go through the sequence list
-		for (RobotData r : requestSequence) {
+		for (RobotData r : requestSequence) 
+		{
 			// If the Robot is on the sequence list
 			if (r.getId() == rId) {
 				// Refresh it's location and speed
 				r.setLocation(rLocation);
 				r.setSpeed(rSpeed);
 				r.setRotation(rRotation);
-			}
-			//Set the found flag
-			found = true;
+				
+				//Set the found flag
+				found = true;
+			}			
 		}
 		
 		// If the Robot is not on the sequence list
-		if(!found) {
+		if(!found)
+		{
 			// Add the Robot to the sequence
 			requestSequence.add(new RobotData(rId, rLocation, rSpeed, rTime, rRotation));
 		}
 		
 		// Reset the flag
 		found = false;
+		
+		LCD.drawString("Je passe", 0,6);
 		
 		updatePassageSequence();
 		
@@ -105,23 +122,31 @@ public class ReceiveServer {
 		}else {
 			for (RobotData r : requestSequence) {
 				i++;
-				for(int o=0;o<passageSequence.size();o++)
+				
+				//TODO
+				//replace by itarator
+				Iterator toto = (Iterator) passageSequence.iterator();
+				
+				while(toto.hasNext())
 				{
-					// If new data from robot already in passageSequence -> Update
-					if(r.getId() == passageSequence.get(o).getId())
+					RobotData robotNext = (RobotData)toto.next();
+					
+					//If new data from robot already in passageSequence -> Update
+					if(r.getId() == robotNext.getId())
 					{
-						if(Position.SORTIE.equals(r.getLocation()))
+						if(Position.SORTIE.getID() == r.getLocation())
 						{
-							passageSequence.remove(o);
+							toto.remove();
 							requestSequence.remove(i);
 						}else {
-							passageSequence.get(o).setLocation(r.getLocation());
-							passageSequence.get(o).setSpeed(r.getSpeed());
-							passageSequence.get(o).setRotation(r.getRotation());
+							robotNext.setLocation(r.getLocation());
+							robotNext.setSpeed(r.getSpeed());
+							robotNext.setRotation(r.getRotation());
 						}
 						found = true;
 					}
 				}
+				
 				if(!found)
 				{					
 					// If the Robot from the request list is from the same path as the last one from sequence list, add the Robot
@@ -144,10 +169,15 @@ public class ReceiveServer {
 	
 	private static void sendPassageSequence() throws SocketException, IOException
 	{
-		String data = "";
+		String data = "server\r\n";
+		
 		for (RobotData r : passageSequence) {
-			data += Integer.toString(r.getId()) + "\r\n" + Integer.toString(r.getLocation()) + "\r\n" + Integer.toString(r.getSpeed()) + "\r\n";
+			data += Integer.toString(r.getId()) + "\r\n" 
+					+ Integer.toString(r.getLocation()) + "\r\n" 
+					+ Integer.toString(r.getSpeed()) + "\r\n";
 		}
+		
+		data += "end";
 		
 		CentralizedSync.sendPos(data);
 	}

@@ -22,6 +22,12 @@ public class CentralizedSync {
 		RobotRcvListner myRcvListner = new RobotRcvListner(myRobot);
 		BroadcastReceiver.getInstance().addListener(myRcvListner);
 	}	
+	
+	public static void addServerRcvListner(ReceiveServer myServer) throws IOException
+	{
+		Listener myListener = new Listener(myServer);
+		BroadcastReceiver.getInstance().addListener(myListener);
+	}
 
 	/*
 	 * Send robots information as a String
