@@ -55,7 +55,7 @@ Neid02
 
 -----------------------------------------A faire----------------------------------------------
 		
-- Maintien de la distance de sécurité entre 2 robots									-TODO (Déjà fait)
+- Maintien de la distance de sécurité entre 2 robots									-OK (Déjà fait)
 
 
 - Envoi de la requete de passage (Robot -> Serveur)									-OK
