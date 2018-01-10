@@ -23,7 +23,7 @@ public class ThreadFollowLine implements Runnable{
 	{
 		for(;;)
 		{
-			threadFollowLineData[0] = myThreadRobot.moveModeController.followLine(threadFollowLineData[1]);
+			threadFollowLineData[0] = myThreadRobot.moveModeController.followLine();
 		}		
 	}
 

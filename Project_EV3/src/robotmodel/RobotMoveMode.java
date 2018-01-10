@@ -49,8 +49,10 @@ public class RobotMoveMode {
 	 * Function followLine 
 	 */
 	
-	public int followLine(int pCurve) {
-		if(sensorController.getDist()<distanceMin) {
+	public int followLine() 
+	{
+		if(sensorController.getDist()<distanceMin)
+		{
 			rerunAfterStop=true;
 			motorController.setSpeed(0);
 		}
@@ -82,10 +84,10 @@ public class RobotMoveMode {
 				rgb = sensorController.getRgbSampler();
 				
 				//Ecriture couleur renvoy�e
-	//				LCD.drawString("RGB : ", 0, 0, false);
-	//				LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-	//				LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-	//				LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
+			//	LCD.drawString("RGB : ", 0, 0, false);
+			//	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
+			//	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
+			//	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
 				
 				//Orange
 				if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)
@@ -130,14 +132,12 @@ public class RobotMoveMode {
 			//			}
 					compteurNoir=1;
 					compteurBlanc=1;
-					motorController.init();
 					compteurVirage=0;
-					//LCD.clear(4);
+					motorController.init();
 				}
 			}
 		}
-	
-	return 1; //Success
+		return 	compteurVirage;
 	}
 	
 	
