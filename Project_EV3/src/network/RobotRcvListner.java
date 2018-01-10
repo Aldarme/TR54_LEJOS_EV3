@@ -3,12 +3,13 @@ package network;
 import java.nio.ByteBuffer;
 import java.util.Vector;
 
+import lejos.hardware.lcd.LCD;
 import robotmodel.Robot;
 
 public class RobotRcvListner implements BroadcastListener{
 
 	private Robot myRobot;
-	private String Delimiter = "\r\n";	
+	private String Delimiter = "\n";	
 	
 	public RobotRcvListner(Robot pMyRobot) {
 		this.myRobot = pMyRobot;
@@ -19,15 +20,15 @@ public class RobotRcvListner implements BroadcastListener{
 	{
 		//get string from wifi
 		String lstnerValidServer = ByteBuffer.wrap(message).toString();	
-		
+		LCD.drawString(lstnerValidServer, 0, 1);
 		//get Server
 		String subString[] = lstnerValidServer.split(Delimiter);
 		
 		int size = (subString.length-2)/3;
 
-		int rang = -1;
+		//int rang = -1;
 		
-		if(subString[0] == "server")
+		if(subString[0] == "-1")
 		{
 			for(int i=0; i < size; i++)
 			{
@@ -35,7 +36,7 @@ public class RobotRcvListner implements BroadcastListener{
 				{
 					//Robot could move across conflict zone
 					this.myRobot.SetValidServer(true);
-					rang = i;
+					//rang = i;
 				}
 			}
 		}		

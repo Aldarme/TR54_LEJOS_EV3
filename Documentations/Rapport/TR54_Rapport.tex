@@ -1,6 +1,10 @@
 \documentclass[french,a4paper,12pt]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+%Package paramétrage:
+%marge horizontale à 2,5 cm, et la marge verticale à 1,5 cm.
+\usepackage{geometry}
+\geometry{hmargin=2.5cm,vmargin=1.5cm}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{listings}
@@ -26,10 +30,8 @@
   tabsize=3
 }
 
-
-
 \title{TR54 \\ TP Projet :\\ Intersection Autonome}
-\author{Professeur encadrant :\\LOMBARD Alexandre \\\\ Élèves :\\ROMET Pierre\\Carrion Nicolas\\Burger Valentin\\Panassim Hessou}
+\author{Professeur encadrant :\\LOMBARD Alexandre \\ ABBAS-TURKI Abdeljalil\\\\ Élèves :\\ROMET Pierre\\CARRION Nicolas\\BURGER Valentin\\PANASSIM Hessou}
 %\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{Rapport_screen_activity-Stock_liste.png}\hss}\hfill\null\newline
 \date{Automne 2017}
 
@@ -40,17 +42,18 @@
 \tableofcontents
 
 \part{Introduction}
+\chapter{Présentation}
 Lors de ce TP Projet,
 il nous fut proposé d'implémenter des "Véhicules Guidés Autonome" (VGA), afin de mettre en œuvre un contrôle
 temps réel sans fil, destiné à prévenir le passage d'une intersection selon un protocole prédéfini.
 
-\part{Objectif}
+\chapter{Objectif}
 L'objectif du projet est la réalisation d'une intersection autonome en utilisant les robots Légo EV3.
 Trois robots (ou plus) devrons se déplacer sur un circuit en forme de huit et négocier leur droit de passage à
 l'intersection par communication sans fil afin d'éviter les collisions.
 
 \part{Éléments à notre disposition}
-Afin de mettre en œuvre notre projet, nous avons eu à dispositions les éléments suivants.
+%Afin de mettre en œuvre notre projet, nous avons eu à dispositions les éléments suivants.
 
 \chapter{Le circuit}
 Le circuit mise à notre disposition est découpé en plusieurs zones:
@@ -77,7 +80,7 @@ Puis, si le passage n'est pas occupé, le robot obtient le droit de passage, sin
 Enfin, lorsque le robot à fini de traverser la zone, il envoie un acquittement, afin de notifier le serveur que la zone de conflit est libre.
 
 \item Synchronisation de vitesse:
-A l’approche de l’intersection (zone d’entrée) un robot envoie une requête de passage au serveur d’intersection.
+A l’approche de l'intersection (zone d’entrée) un robot envoie une requête de passage au serveur d’intersection.
 De son côté le serveur construit une séquence de passage ordonnée à partir des requêtes reçues et la retransmet
 à l’ensemble des robots concernés. La liste contient l’ensemble des robots ayant émis une requête pour franchir
 l’intersection, leur position et leur vitesse. Tous les robots sont autorisés à franchir l’intersection, mais ils doivent synchroniser leur vitesse avec ceux qui les précèdent dans la séquence. Par exemple, si un robot est en position 3 dans la séquence, il ne pourra traverser qu’après que le robot en position 2 soit sorti de la séquence. Pour ce faire, chaque robot, une fois dans la séquence de passage, doit émettre régulièrement auprès du serveur des messages pour l’informer de sa nouvelle position et sa nouvelle vitesse. Ces informations sont retransmises à
@@ -113,14 +116,59 @@ Concernant la construction de la séquence de passage, devant permettre le franc
 \chapter{Intersection}
 
 \section{Politique de négociation}
+La politique de négociation utilisé pour notre projet, afin de gérer le droit de passage des robots au sein de la zone de conflit, est la politique de synchronisation des vitesses. Bien que cette politique ai été imposé par le sujet, elle offre une méthodologie plus complète que les autres politiques présenté plus tôt dans ce chapitre.
+
+En effet, on retrouve la gestion via un serveur centralisé, mais qui offre une mécanique plus sophistiqué, en utilisant plusieurs zones de contrôle. De plus, une interaction inter-robot afin d'adapter la vitesse déplacement entre les robots au sein des zones offre une méthodologie plus élégante. 
 
 \section{Stratégie de régulation}
+Pour ce projet, deux stratégies de régulation nous furent proposées.
+Nous avons choisi d'implémenter la politique de "BATCH", étant, après analyse la stratégie la plus performante.
+
+Le principal inconvénient de la stratégie "FIFO", réside dans son utilisation de l'horloge.
+En effet, dans le cas ou deux robots se présentais quasiment au même instant pour franchir la zone d'intersection et que l'un des messages transmis au serveur soit perdu, compromit, ou envoyé avec un retard, alors il y aurait un risque que le deuxième robot s'engage dans la zone d'intersection alors que le premier robot est déjà en train de franchir cette zone.
+
+De plus, cette stratégie ne donne pas de priorité en fonction du nombre de robot sur une section. Ainsi, il peut se produire un cas d'engorgement sur une zone, mais que cette dernière ne puisse pas évacuer ces occupants.
+
+La politique de "BATCH" à l'avantage de pallier à ces deux problèmes, étant certes plus complexe mais couvrant plus précisément les situations de conflits ou d'inter-blocages.
 
 \chapter{Communication sans file}
+Comme nous l'avons vu dans le chapitre précédant, la communication sans fil est au cœur même de notre projet. En effet, s'est elle qui nous permet de mettre en place notre politique de négociation et notre stratégie de régulation.
+La communication sans fil se base sur une connexion Wifi, client/serveur, avec un échange de données évoluant autour d'une synchronisation centralisée des données.
+
+La communication sans fil est donc divisé en deux parties:
+
+\section{Partie Client (robot Lejos EV3)}%Pierre
+Comme nous l'avons vu précédemment, si nous voulons pouvoir mettre en place une politique négociation et une stratégie de régulation, il va nous falloir échanger des données clefs entre les robots, et le serveur.
+
+Pour cela, nous avons mis en place une communication basé sur le protocole TCP/IP, devant nous permettre de certifier l'envoie des données. Le protocole TCP étant orienté-connexion par le principe de la poignée de main (handshake), il établit au préalable une connexion entre les processus avant de débuter la transmission.
+
+Nous acheminons ainsi du robot au serveur, une structure de données regroupant:
+  \begin{itemize}
+  \item L'identifiant du robot envoyant les données.
+  \item La vitesse actuelle du robot en déplacement.
+  \item La zone dans laquelle le robot évolue (zone entrée, stockage, conflit et sortie).
+  \item La virage du quel le robot provient, afin de permettre au serveur de déterminer de quel coté le robot se présente, afin de franchir la zone de conflit.
+  \end{itemize}
+  
+Les données étant transmise sous la forme d'une chaine de caractères afin de pouvoir être envoyé en une seul  séquence de contrôle; nous l'avons basé sur le modèle suivant:
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=10cm]{sequ.png}\hss}\hfill\null\newline
+
+Ainsi, la même séquence de contrôle pourra être utiliser pour transmettre les informations du serveur au robot.
+
+Il ne lui reste plus qu'à être traité par le serveur, pour utiliser les données.
 
 \section{Serveur}%Valentin
 
-\section{Client}%Pierre
+\chapter{Franchissement des zones de contrôles}
+Nous l'avons vu ci-dessus, le franchissement des zones de contrôle est rendu possible par la communication sans fil (wifi) que nous venons de voir. Ainsi, un échange standardisé est mis en place de façon à disposer de même design, quand au format utilisé pour échanger les données entre les robots et le serveur et inversement.
+Nous allons voir dans cette partie, l'implémentation de la synchronisation de vitesse et de la politique de "Batch".
+
+A l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présenté plus tôt) au serveur, puis va s'engager dans cette zone.
+Ensuite, le robot va arriver dans la zone de stockage où il va à nouveau émettre les mêmes données actualisé à destination du serveur. Dans un même temps, la stratégie de régulation est mis en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cette acquittement soit négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé.
+
+
+
 
 \chapter{Le suivi de ligne} %Nico && Nadège
 
