@@ -9,9 +9,9 @@
 \contentsline {chapter}{\numberline {6}Intersection}{10}
 \contentsline {section}{\numberline {6.1}Politique de n\IeC {\'e}gociation}{10}
 \contentsline {section}{\numberline {6.2}Strat\IeC {\'e}gie de r\IeC {\'e}gulation}{10}
-\contentsline {chapter}{\numberline {7}Communication sans file}{11}
+\contentsline {chapter}{\numberline {7}Communication sans fil}{11}
 \contentsline {section}{\numberline {7.1}Partie Client (robot Lejos EV3)}{11}
-\contentsline {section}{\numberline {7.2}Serveur}{12}
+\contentsline {section}{\numberline {7.2}Partie Serveur}{12}
 \contentsline {chapter}{\numberline {8}Franchissement des zones de contr\IeC {\^o}les}{14}
 \contentsline {chapter}{\numberline {9}Le suivi de ligne}{15}
 \contentsline {section}{\numberline {9.1}M\IeC {\'e}thode utilis\IeC {\'e}e}{15}

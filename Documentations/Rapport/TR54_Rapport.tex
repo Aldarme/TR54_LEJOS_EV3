@@ -31,7 +31,7 @@
 }
 
 \title{TR54 \\ TP Projet :\\ Intersection Autonome}
-\author{Professeur encadrant :\\LOMBARD Alexandre \\ ABBAS-TURKI Abdeljalil\\\\ Élèves :\\ROMET Pierre\\CARRION Nicolas\\BURGER Valentin\\PANASSIM Hessou}
+\author{Professeurs encadrants :\\LOMBARD Alexandre \\ ABBAS-TURKI Abdeljalil\\\\ Élèves :\\ROMET Pierre\\CARRION Nicolas\\BURGER Valentin\\PANASSIM Hessou}
 %\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{XXXX.png}\hss}\hfill\null\newline
 \date{Automne 2017}
 
@@ -225,6 +225,7 @@ Une fois créée, cette séquence ressemble à celle-ci: " -1 \textbackslash n0 
 \chapter{Franchissement des zones de contrôles}
 Nous l'avons vu ci-dessus, le franchissement des zones de contrôle est rendu possible par la communication sans fil (wifi) que nous venons de voir. Ainsi, un échange standardisé est mis en place de façon à disposer de même design, quand au format utilisé pour échanger les données entre les robots et le serveur et inversement.
 Nous allons voir dans cette partie, l'implémentation de la synchronisation de vitesse et de la politique de "Batch".
+
 
 A l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présenté plus tôt) au serveur, puis va s'engager dans cette zone.
 Ensuite, le robot va arriver dans la zone de stockage où il va à nouveau émettre les mêmes données actualisé à destination du serveur. Dans un même temps, la stratégie de régulation est mis en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cette acquittement soit négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé.
