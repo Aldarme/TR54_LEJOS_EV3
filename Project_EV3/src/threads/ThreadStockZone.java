@@ -34,7 +34,7 @@ public class ThreadStockZone implements Runnable {
 		
 		while(myThreadRobot.motorController.getTachy() < 360)
 		{
-			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
+			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
 			myThreadRobot.motorController.forward();
 		}
 }

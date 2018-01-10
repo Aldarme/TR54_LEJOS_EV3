@@ -35,7 +35,7 @@ public class RobotMoveMode {
 	private int compteurVirage=0;
 	float rgb[]= new float[3];
 	float ratioG = 0.95f;
-	float ratioD = 0.96f;
+	float ratioD = 0.95f;
 
 	RobotMotorController motorController;
 	RobotSensorController sensorController;
@@ -78,8 +78,7 @@ public class RobotMoveMode {
 			//	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
 			//	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
 				
-				//tester distance du robot devant !
-				//Si noir		
+				//Get value from capteur				
 				rgb = sensorController.getRgbSampler();
 				
 				//Ecriture couleur renvoy�e
@@ -88,10 +87,17 @@ public class RobotMoveMode {
 	//				LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
 	//				LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
 				
-				//Si noir
-			
-				if(rgb[0]<= 0.07 && rgb[1]<= 0.07 && rgb[2]<=0.07
-						) {
+				//Orange
+				if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)
+						&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)
+						&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
+					)
+				{
+					//Do Nothing
+				}
+				
+				//Black			
+				if(rgb[0]<= 0.07 && rgb[1]<= 0.07 && rgb[2]<=0.07) {
 					stateBeforeStop=1;
 					compteurBlanc=1;
 					motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
@@ -99,7 +105,7 @@ public class RobotMoveMode {
 					compteurVirage++;
 				}
 				
-				//Si blanc
+				//White	//Save: rgb[0]>0.08 && rgb[1]>0.08 && rgb[2]>0.08
 				else if(rgb[0]>0.08 && rgb[1]>0.08 && rgb[2]>0.08){
 					stateBeforeStop=2;
 					compteurNoir=1;
@@ -108,7 +114,7 @@ public class RobotMoveMode {
 					compteurVirage--;
 				}
 				
-				//Si "bleu" 
+				//Blue 
 				//Else et non else if car apr�s s'�tre arr�t� le robot ne se retrouvait dans aucun des cas et restait donc arr�t�
 				//else if ((rgb[0]>0.020 && rgb[0]<0.04 ) && (rgb[1]>0.05 && rgb[1]<0.2 ) && (rgb[2]>0.04 && rgb[2]<0.08 )) {
 				else if ((rgb[0]>0.0264 && rgb[0]<0.123 ) && (rgb[1]>0.059 && rgb[1]<0.16 ) && (rgb[2]>0.105 && rgb[2]<151 ))

@@ -122,6 +122,8 @@ public class BroadcastReceiver implements AutoCloseable
 				{
 					//
 				}
+				
+				buffer = new byte[1024];
 			}
 		}
 		

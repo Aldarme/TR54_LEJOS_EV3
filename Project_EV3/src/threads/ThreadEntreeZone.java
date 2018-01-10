@@ -21,6 +21,7 @@ public class ThreadEntreeZone implements Runnable {
 	{
 		//set current position of the robot
 		myThreadRobot.setPosition(Position.ENTREE);
+		myThreadRobot.setLedMode(5);
 		
 		//send current position to the server
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
@@ -33,7 +34,7 @@ public class ThreadEntreeZone implements Runnable {
 		
 		while(myThreadRobot.motorController.getTachy() < 720)
 		{
-			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
+			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
 			myThreadRobot.motorController.forward();
 		}
 	}

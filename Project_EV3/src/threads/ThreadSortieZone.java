@@ -22,6 +22,7 @@ public class ThreadSortieZone implements Runnable {
 	{
 		//set current position of the robot
 		myThreadRobot.setPosition(Position.SORTIE);
+		myThreadRobot.setLedMode(0);
 		
 		//send current position to the server
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
@@ -32,9 +33,9 @@ public class ThreadSortieZone implements Runnable {
 
 		//.myThreadRobot.motorController.tachyReset();
 		
-		while(myThreadRobot.motorController.getTachy() < 360)
+		while(myThreadRobot.motorController.getTachy() < 180)
 		{
-			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
+			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
 			myThreadRobot.motorController.forward();
 		}
 		

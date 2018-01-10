@@ -33,9 +33,9 @@ public class ThreadConflictZone implements Runnable {
 		
 		myThreadRobot.motorController.tachyReset();
 		
-		while(myThreadRobot.motorController.getTachy() < 1080)
+		while(myThreadRobot.motorController.getTachy() < 720)
 		{
-			LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
+			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
 			myThreadRobot.motorController.forward();	
 		}
 	}

@@ -20,7 +20,7 @@ public class HappinessTherapy {
 	{
 
 		//Init my robot with an ID
-		Robot myRobot = new Robot(0);
+		Robot myRobot = new Robot(1);
 		ReceiveServer myServer = new ReceiveServer();
 		
 		float[] orangeTab = new float[] {0.11f,0.2f,0.04f,0.08f,0.002f,0.08f};
@@ -31,9 +31,9 @@ public class HappinessTherapy {
 		Thread threadEntree = new Thread(new ThreadEntreeZone(myRobot));
 		Thread threadStock = new Thread(new ThreadStockZone(myRobot));
 		Thread threadConflict = new Thread(new ThreadConflictZone(myRobot));
-		Thread threadSortie = new Thread(new ThreadConflictZone(myRobot));
+		Thread threadSortie = new Thread(new ThreadSortieZone(myRobot));
 
-		LCD.drawString("Hello my friend!!!", 0, 1);
+		/*LCD.drawString("Hello my friend!!!", 0, 1);
 		LCD.drawString("Commands:", 0, 2);
 		LCD.drawString("Right : server", 0, 3);
 		LCD.drawString("Left : pilote", 0, 4);
@@ -48,7 +48,7 @@ public class HappinessTherapy {
 			myServer.mainServer();
 		}
 		else if(button == Button.ID_LEFT)
-		{
+		{*/
 			LCD.clear();
 			myRobot.motorController.init();			
 			network.CentralizedSync.addRobotRcvListner(myRobot);
@@ -88,7 +88,7 @@ public class HappinessTherapy {
 					}					
 					
 					//Start the Thread for Entree Zone
-					threadEntree.run();//utiliser methode prof
+					threadEntree.run();
 					
 					//Start the Thread for Stock Zone
 					threadStock.run();
@@ -96,7 +96,7 @@ public class HappinessTherapy {
 					if(myRobot.getValidServer() == false)
 					{
 						myRobot.StopMotor();
-						LCD.drawString("motor stopped", 0, 1);
+						//LCD.drawString("motor stopped", 0, 1);
 						
 						//Wait that "ValidServer" was update from false to true
 						while(myRobot.getValidServer() == false){}
@@ -115,7 +115,7 @@ public class HappinessTherapy {
 				
 				//Thread.sleep(100);
 			}
-		}
+		//}
 	}
 }
 

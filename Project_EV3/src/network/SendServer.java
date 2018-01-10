@@ -17,9 +17,9 @@ public class SendServer {
 	public static void dataToSend(int pID, int pSpeed, int pPosition, int pCurve)
 	{
 		try {
-			CentralizedSync.sendPos( Integer.toString(pID) + "\r\n" 
-									+ Integer.toString(pPosition) + "\r\n" 
-									+ Integer.toString(pSpeed)+ "\r\n" 
+			CentralizedSync.sendPos( Integer.toString(pID) + "\n" 
+									+ Integer.toString(pPosition) + "\n" 
+									+ Integer.toString(pSpeed)+ "\n" 
 									+ Integer.toString(pCurve)
 									);
 		} catch (IOException e) {
