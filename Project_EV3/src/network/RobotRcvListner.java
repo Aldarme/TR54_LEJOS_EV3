@@ -27,9 +27,7 @@ public class RobotRcvListner implements BroadcastListener{
 		try
 		{
 			//get Server
-			String subString[] = lstnerValidServer.split(Delimiter);
-			
-			
+			String subString[] = lstnerValidServer.split(Delimiter);			
 			
 			int size = (subString.length-2)/3;
 	
@@ -56,6 +54,7 @@ public class RobotRcvListner implements BroadcastListener{
 						default:
 							this.myRobot.setLedMode(2);
 							break;
+						}
 					}
 				}
 			}		

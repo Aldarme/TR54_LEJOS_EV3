@@ -20,7 +20,7 @@ public class HappinessTherapy {
 	{
 
 		//Init my robot with an ID
-		Robot myRobot = new Robot(1);
+		Robot myRobot = new Robot(0);
 		ReceiveServer myServer = new ReceiveServer();
 		
 		float[] orangeTab = new float[] {0.11f,0.2f,0.04f,0.08f,0.002f,0.08f};
