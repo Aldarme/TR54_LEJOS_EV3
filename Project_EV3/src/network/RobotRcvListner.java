@@ -19,10 +19,9 @@ public class RobotRcvListner implements BroadcastListener{
 	public void onBroadcastReceived(byte[] message)
 	{
 		//get string from wifi
-		//String lstnerValidServer = ByteBuffer.wrap(message).toString();
 		String lstnerValidServer = new String(message);
 		
-		//System.out.println("Data: " + lstnerValidServer);
+		System.out.println("Data: " + lstnerValidServer);
 		
 		try
 		{
@@ -41,6 +40,8 @@ public class RobotRcvListner implements BroadcastListener{
 					{
 						//Robot could move across conflict zone
 						this.myRobot.SetValidServer(true);
+						
+						//get robot's position into the scheduler to define led color
 						switch(i)
 						{
 						case 0:

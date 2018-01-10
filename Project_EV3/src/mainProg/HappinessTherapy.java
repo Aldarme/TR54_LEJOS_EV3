@@ -17,9 +17,10 @@ public class HappinessTherapy {
 
 	public static void main(String[] args) throws InterruptedException, IOException
 	{
-
 		//Init my robot with an ID
 		Robot myRobot = new Robot(0);
+		
+		myRobot.setLedMode(0);
 		
 		float[] orangeTab = new float[] {0.11f,0.2f,0.04f,0.08f,0.002f,0.08f};
 		int[] followLineData = new int[1]; //[0] = currentCurve
@@ -55,15 +56,13 @@ public class HappinessTherapy {
 				//Send current Curve					
 				if(followLineData[0] < 0)
 				{
-					//LCD.drawString("Right", 0, 4, false);
-					myRobot.setCurCurve(followLineData[1]);
-					LCD.drawString(Integer.toString(followLineData[1]), 1, 1);
+					myRobot.setCurCurve(followLineData[0]);
+					//LCD.drawString(Integer.toString(followLineData[0]), 1, 1);
 				}
 				else if(followLineData[0] > 0)
 				{
-					//LCD.drawString("Left ", 0, 4, false);
-					myRobot.setCurCurve(followLineData[1]);
-					LCD.drawString(Integer.toString(followLineData[1]), 1, 1);
+					myRobot.setCurCurve(followLineData[0]);
+					//LCD.drawString(Integer.toString(followLineData[0]), 1, 1);
 				}
 				
 				//Start the Thread for Entree Zone
