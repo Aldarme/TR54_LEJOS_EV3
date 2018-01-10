@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import lejos.hardware.Button;
 import lejos.hardware.lcd.LCD;
-import network.ReceiveServer;
 import robotmodel.*;
 import threads.*;
 
@@ -21,7 +20,6 @@ public class HappinessTherapy {
 
 		//Init my robot with an ID
 		Robot myRobot = new Robot(0);
-		ReceiveServer myServer = new ReceiveServer();
 		
 		float[] orangeTab = new float[] {0.11f,0.2f,0.04f,0.08f,0.002f,0.08f};
 		int[] followLineData = new int[1]; //[0] = currentCurve
