@@ -32,7 +32,7 @@
 
 \title{TR54 \\ TP Projet :\\ Intersection Autonome}
 \author{Professeur encadrant :\\LOMBARD Alexandre \\ ABBAS-TURKI Abdeljalil\\\\ Élèves :\\ROMET Pierre\\CARRION Nicolas\\BURGER Valentin\\PANASSIM Hessou}
-%\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{Rapport_screen_activity-Stock_liste.png}\hss}\hfill\null\newline
+%\hfill\hbox to 0pt{\hss\includegraphics[width=7cm]{XXXX.png}\hss}\hfill\null\newline
 \date{Automne 2017}
 
 \begin{document}
@@ -110,8 +110,8 @@ Concernant la construction de la séquence de passage, devant permettre le franc
 	\end{itemize}
 \end{itemize}
 
-\part{Travail Réalisé}
 
+\part{Travail Réalisé}
 
 \chapter{Intersection}
 
@@ -131,7 +131,7 @@ De plus, cette stratégie ne donne pas de priorité en fonction du nombre de rob
 
 La politique de "BATCH" à l'avantage de pallier à ces deux problèmes, étant certes plus complexe mais couvrant plus précisément les situations de conflits ou d'inter-blocages.
 
-\chapter{Communication sans file}
+\chapter{Communication sans fil}
 Comme nous l'avons vu dans le chapitre précédant, la communication sans fil est au cœur même de notre projet. En effet, s'est elle qui nous permet de mettre en place notre politique de négociation et notre stratégie de régulation.
 La communication sans fil se base sur une connexion Wifi, client/serveur, avec un échange de données évoluant autour d'une synchronisation centralisée des données.
 
@@ -158,7 +158,69 @@ Ainsi, la même séquence de contrôle pourra être utiliser pour transmettre le
 
 Il ne lui reste plus qu'à être traité par le serveur, pour utiliser les données.
 
-\section{Serveur}%Valentin
+\section{Partie Serveur}%Valentin
+
+Pour ce projet, concernant le type de serveur utilisé, nous nous sommes porté sur un serveur Java tournant sur machine Linux ou Windows.
+Nous avons choisi ce type de serveur, car il nous a permis de contourner les difficultés rencontré par le premier type de serveur que nous avions choisi d'utiliser; le Robot Lejos EV3.
+La principale difficulté étant que l'utilisation du wifi sur les robots reste très aléatoire, quand à arriver a le connecté à un hotspot. De plus, cela nous à permit de nous séparer de la contrainte matériel, nous permettant de développer le serveur et de réaliser des tests en dehors des heures de tp.
+
+Le serveur utilisé dans ce projet est un serveur fonctionnant avec le protocole UDP. Son rôle ici est de centraliser les messages des différents robots présent sur le circuit afin de déterminer un ordre de passage dans l’intersection, c’est-à-dire en donnant ou en ne donnant pas l’autorisation de franchir l’intersection à chaque robot.
+
+Le serveur fonctionne en 3 parties majeures. La première partie concerne la réception et l’enregistrement des données envoyées par les robots. La seconde partie se chargera de construire la séquence de passage en fonction des requêtes reçues et en suivant la politique batch expliqué plus haut. Pour finir, le serveur envoi cette séquence de passage à l’ensemble des robots qui n’auront qu’à vérifier s’ils sont présents dans la liste. Si oui alors ils peuvent avancer, si non, ils attendent les prochaines instructions.
+
+L’implémentation finale utilisée fonctionne sur un ordinateur, même si elle peut être portée sur un robot. Du point de vue du code elle fonctionne de la manière suivante.
+
+On crée un listener qui va se déclencher à chaque réception d’un message sur le réseau via le protocole UDP. A partir de se listener, les données vont être converties de Bytes à String afin de pouvoir traiter les données plus facilement. Les données sont ensuite traitées comme suit :
+
+Voici un exemple de trame de donnée provenant d’un robot: " 0\textbackslash n0 \textbackslash n255 \textbackslash n-1 " \newline
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{val.png}\hss}\hfill\null\newline
+
+Une fois la trame de données reçue, elle est découpée suivant les délimiteurs afin de former un couple de 4 variables rassemblant ainsi, la position, la vitesse et le sens de rotation d’un robot définit par son ID. A cela, on ajoute le temps système du serveur afin de gérer la dimension temporelle des demandes. On prend ici le temps serveur, car c’est une base commune à tous les robots.
+
+Une fois tout ceci effectué, on passe à la partie mise à jour de la séquence de requête. En effet, chaque robot effectuant une requête ne se retrouve pas directement dans la séquence de passage, c’est pourquoi il faut une séquence « tampon » afin de conserver les demandes. Il se présente alors 2 cas :
+\begin{itemize}
+\item Le robot est déjà présent dans la liste
+	On met à jour sa position, sa vitesse ainsi que son sens de rotation
+	
+\item Le robot n’a pas été trouvé dans la liste
+	On l’ajoute à la liste
+\end{itemize}
+
+Quand la séquence de requête est à jour, on passe à la création de la séquence de passage. Celle-ci est créée conformément à la politique batch. C’est-à-dire :
+\begin{itemize}
+\item Si la séquence de requête ne comporte qu’un robot et que la séquence de passage est vide.
+	Ajouter le robot dans la séquence de passage
+	
+\item Sinon on parcourt la séquence de requête
+
+\item Si un robot de la séquence de requête est présent dans la séquence de passage
+	\begin{itemize}
+	\item Si le robot a quitté l’intersection
+		On le retire de la séquence de passage
+		
+	\item Sinon
+		On met à jour sa position, sa vitesse ainsi que son sens de rotation
+	\end{itemize}
+	
+\item Sinon, si le robot n’a pas été trouvé dans la séquence de passage
+	\begin{itemize}
+	\item Si le dernier robot présent dans la séquence de passage à le même sens de rotation que le robot actuel
+		Ajouter le robot à la séquence de passage
+		
+	\item Sinon, si le délai entre la requête du dernier robot et du robot actuel excède un certain seuil (deltaTime)
+		Ajouter le robot à la séquence de passage
+	\end{itemize}	
+\end{itemize}
+
+Pour finir, le serveur se charge de créer une string représentant l’ensemble de la séquence de passage en y ajoutant un identifiant (« -1 ») en début et fin de chaîne afin de permettre aux robots de différencier les messages provenant du serveur des messages provenant des autres robots.
+
+La séquence de passage est donc composée de ces deux identifiants, ainsi que des IDs, positions et vitesses des robots autorisés à franchir l’intersection. 
+
+Une fois créée, cette séquence ressemble à celle-ci: " -1 \textbackslash n0 \textbackslash n0 \textbackslash n255 \textbackslash n[…] \textbackslash n-1 " \newline
+ 
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{val2.png}\hss}\hfill\null\newline
 
 \chapter{Franchissement des zones de contrôles}
 Nous l'avons vu ci-dessus, le franchissement des zones de contrôle est rendu possible par la communication sans fil (wifi) que nous venons de voir. Ainsi, un échange standardisé est mis en place de façon à disposer de même design, quand au format utilisé pour échanger les données entre les robots et le serveur et inversement.
@@ -167,10 +229,39 @@ Nous allons voir dans cette partie, l'implémentation de la synchronisation de v
 A l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présenté plus tôt) au serveur, puis va s'engager dans cette zone.
 Ensuite, le robot va arriver dans la zone de stockage où il va à nouveau émettre les mêmes données actualisé à destination du serveur. Dans un même temps, la stratégie de régulation est mis en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cette acquittement soit négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé.
 
-
-
-
 \chapter{Le suivi de ligne} %Nico && Nadège
+
+\section{Méthode utilisée}
+Notre méthode de suivi de ligne consiste à suivre la bordure gauche du chemin, en alternant entre le blanc et le noir. Le robot diminue progressivement la vitesse d’une de ses roues (gauche ou droite selon la rotation voulue) dans l’objectif d’avancer tout en tournant, et va tout droit lorsqu’il est dans le bleu.
+
+Afin de ne pas rester bloqué dans l'un r des deux couleurs, nos avons adoptés une dégression progressive de la vitesse de la roue concernée. En d'autres terles, plus le robot reste dans une même couleur, plus la rotation augmente, avec pour objectif de ne pas trop s'éloigner de la bordure.
+
+Nous diminuons la vitesse du moteur de la roue gauche si nous voulons tourner à gauche, à l’inverse, nous diminuons la vitesse du moteur de la roue droite si nous voulons tourner à droite. La vitesse de la roue concernée évolue selon la fonction suivante :
+
+Vitesse = C * i * vitesse initiale
+
+Avec :
+\begin{itemize}
+\item "C" est un coefficient égal à 0.95 (pour la rotation à gauche) et 0.96 (pour la rotation à droite).
+
+\item "i" le nombre d’itérations durant lesquels le robot se trouve dans une même couleur.
+\end{itemize}
+
+Vu que C est inférieur à 1, la vitesse diminuera progressivement jusqu’à 0.
+Nous avons des coefficients différents car nous avons observé, par tâtonnement, un comportement anormal lorsque le coefficient était égal à 0.95 pour les 2 rotations.
+
+\section{Détection virage précédent}
+Dans le but de connaître la zone de stockage dans laquelle se trouve chaque robot. Nous avons implémenté un compteur permettant de connaître le sens du virage précédant l’entrée dans la zone de stockage.
+Ce compteur suit la logique suivante :
+\begin{itemize}
+\item Remis à zéro lorsque le robot est dans le bleu
+
+\item Incrémentation lorsque le robot est dans le noir
+
+\item Décrémentation lorsque le robot est dans le blanc
+\end{itemize}
+
+Lorsque le robot passe sur les marqueurs orange (correspond à l’entrée du robot dans une zone d’entrée), si le compteur est positif cela équivaut à dire que le virage précédent était un virage à gauche. Inversement si le compteur est négatif, cela équivaut à dire que le virage précédent était un virage à droite.
 
 \part{Analyse critique}
 

@@ -11,9 +11,12 @@
 \contentsline {section}{\numberline {6.2}Strat\IeC {\'e}gie de r\IeC {\'e}gulation}{10}
 \contentsline {chapter}{\numberline {7}Communication sans file}{11}
 \contentsline {section}{\numberline {7.1}Partie Client (robot Lejos EV3)}{11}
-\contentsline {section}{\numberline {7.2}Serveur}{11}
-\contentsline {chapter}{\numberline {8}Le suivi de ligne}{12}
-\contentsline {part}{IV\hspace {1em}Analyse critique}{13}
-\contentsline {chapter}{\numberline {9}Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{14}
-\contentsline {chapter}{\numberline {10}Solutions apport\IeC {\'e}es}{15}
-\contentsline {part}{V\hspace {1em}Conclusion}{16}
+\contentsline {section}{\numberline {7.2}Serveur}{12}
+\contentsline {chapter}{\numberline {8}Franchissement des zones de contr\IeC {\^o}les}{14}
+\contentsline {chapter}{\numberline {9}Le suivi de ligne}{15}
+\contentsline {section}{\numberline {9.1}M\IeC {\'e}thode utilis\IeC {\'e}e}{15}
+\contentsline {section}{\numberline {9.2}D\IeC {\'e}tection virage pr\IeC {\'e}c\IeC {\'e}dent}{15}
+\contentsline {part}{IV\hspace {1em}Analyse critique}{16}
+\contentsline {chapter}{\numberline {10}Difficult\IeC {\'e}s rencontr\IeC {\'e}es}{17}
+\contentsline {chapter}{\numberline {11}Solutions apport\IeC {\'e}es}{18}
+\contentsline {part}{V\hspace {1em}Conclusion}{19}
