@@ -22,4 +22,5 @@
 \contentsline {part}{IV\hspace {1em}Analyse critique}{20}
 \contentsline {chapter}{\numberline {11}Difficult\IeC {\'e}s rencontr\IeC {\'e}es \& Solutions apport\IeC {\'e}es}{21}
 \contentsline {section}{\numberline {11.1}Partie serveur}{21}
-\contentsline {part}{V\hspace {1em}Conclusion}{22}
+\contentsline {section}{\numberline {11.2}Suivi de ligne}{21}
+\contentsline {chapter}{\numberline {12}Conclusion}{22}
