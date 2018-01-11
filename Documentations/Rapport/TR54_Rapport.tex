@@ -42,6 +42,7 @@
 \tableofcontents
 
 \part{Introduction}
+
 \chapter{Présentation}
 Lors de ce TP Projet,
 il nous fut proposé d'implémenter des "Véhicules Guidés Autonome" (VGA), afin de mettre en œuvre un contrôle
@@ -229,6 +230,9 @@ Nous allons voir dans cette partie, l'implémentation de la synchronisation de v
 
 A l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présenté plus tôt) au serveur, puis va s'engager dans cette zone.
 Ensuite, le robot va arriver dans la zone de stockage où il va à nouveau émettre les mêmes données actualisé à destination du serveur. Dans un même temps, la stratégie de régulation est mis en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cette acquittement soit négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé.
+
+%rajouter les led en fonction de la position scheduler
+%ajouter la politique de regul vitesse fait avec le capteur de distance
 
 \chapter{Le suivi de ligne} %Nico && Nadège
 
