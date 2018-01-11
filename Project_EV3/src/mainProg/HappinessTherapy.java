@@ -18,7 +18,16 @@ public class HappinessTherapy {
 	public static void main(String[] args) throws InterruptedException, IOException
 	{
 		//Init my robot with an ID
-		Robot myRobot = new Robot(0);
+		 final int button = Button.waitForAnyPress();
+		 Robot myRobot;
+		 if(button == Button.ID_RIGHT) 
+			 myRobot = new Robot(0);
+		 else if(button == Button.ID_UP) 
+			 myRobot = new Robot(1);
+		 else if(button == Button.ID_LEFT) 
+			 myRobot = new Robot(2);
+		 else
+			 myRobot = new Robot(3);
 		
 		myRobot.setLedMode(0);
 		
