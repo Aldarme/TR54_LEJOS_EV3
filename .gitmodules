@@ -1,0 +1,3 @@
+[submodule "TR_Server"]
+	path = TR_Server
+	url = https://github.com/ValentinBurger/TR_Server.git
