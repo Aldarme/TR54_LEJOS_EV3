@@ -5,19 +5,27 @@ import robotmodel.Position;
 import robotmodel.Robot;
 
 /**
- * 
+ * Forgot the idea of thread
+ * it's just a class who manage when robot enter in stock area
  * @author promet
  *
  */
-
 public class ThreadStockZone implements Runnable {
 	
 	private Robot myThreadRobot;
 	
+	/**
+	 * Builder by default
+	 * @param pRobot
+	 */
 	public ThreadStockZone(Robot pRobot) {
 		myThreadRobot = pRobot;
 	}
 	
+	/**
+	 * run function
+	 * send request to server
+	 */
 	public void run()
 	{
 		//set current position of the robot

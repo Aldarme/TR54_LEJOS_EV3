@@ -5,20 +5,28 @@ import robotmodel.Position;
 import robotmodel.Robot;
 
 /**
- * 
+ * Forgot the idea of thread
+ * it's just a class who manage when a robot enter in conflict area
  * @author promet
  *
  */
-
 public class ThreadConflictZone implements Runnable {
 	
 	private Robot myThreadRobot;
 	int dist = 2;
 	
+	/**
+	 * Builder by default
+	 * @param pRobot
+	 */
 	public ThreadConflictZone(Robot pRobot) {
 		myThreadRobot = pRobot;
 	}
 	
+	/**
+	 * run function
+	 * send request to server
+	 */
 	public void run()
 	{
 		//set current position of the robot
@@ -29,14 +37,12 @@ public class ThreadConflictZone implements Runnable {
 										myThreadRobot.getSpeed(), 
 										myThreadRobot.getPosition(),
 										ThreadEntreeZone.curveDefined
-										//myThreadRobot.getCurCurve()
 									 );
 		
 		myThreadRobot.motorController.tachyReset();
 		
 		while(myThreadRobot.motorController.getTachy() < 900)
 		{
-			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
 			myThreadRobot.motorController.forward();	
 		}
 	}

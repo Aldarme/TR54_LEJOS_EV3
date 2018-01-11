@@ -8,7 +8,7 @@ import robotmodel.*;
 import threads.*;
 
 /**
- * 
+ * Main class
  * @author promet
  * modify by ncarrion
  */
@@ -37,20 +37,13 @@ public class HappinessTherapy {
                                 robotID--;
                 }
         }
-
+        LCD.clear();
+        LCD.drawString("TR54 forever",0,0);
+        LCD.drawString("Beast number "+ robotID,0,1);
+        LCD.drawString("Activated !!!",0,2);
+        
 		//Init my robot with an ID
         Robot myRobot = new Robot(robotID);
-        
-//		 final int button = Button.waitForAnyPress();
-//		 Robot myRobot;
-//		 if(button == Button.ID_RIGHT) 
-//			 myRobot = new Robot(0);
-//		 else if(button == Button.ID_UP) 
-//			 myRobot = new Robot(1);
-//		 else if(button == Button.ID_LEFT) 
-//			 myRobot = new Robot(2);
-//		 else
-//			 myRobot = new Robot(3);
 		
 		myRobot.setLedMode(0);
 		
@@ -74,13 +67,10 @@ public class HappinessTherapy {
 		for(;;)
 		{
 			myRobot.motorController.forward();
-//			LCD.drawString(Float.toString( myRobot.getColorSensor()[0] ) ,0, 0);
-//			LCD.drawString(Float.toString( myRobot.getColorSensor()[1] ) ,0, 1);
-//			LCD.drawString(Float.toString( myRobot.getColorSensor()[2] ) ,0, 2);
 			/*
 			 * Orange mark detection
 			 */
-			if ((myRobot.getColorSensor()[0] > orangeTab[0] && 	myRobot.getColorSensor()[0] <  orangeTab[1]	)		//get real value of ORANGE RGB
+			if ((myRobot.getColorSensor()[0] > orangeTab[0] && 	myRobot.getColorSensor()[0] <  orangeTab[1]	)		
 				&& (myRobot.getColorSensor()[1] > orangeTab[2] && myRobot.getColorSensor()[1] <  orangeTab[3]	)
 				&& (myRobot.getColorSensor()[2] > orangeTab[4] && myRobot.getColorSensor()[2] <  orangeTab[5]	) 
 				)
@@ -91,12 +81,10 @@ public class HappinessTherapy {
 				if(followLineData[0] < 0)
 				{
 					myRobot.setCurCurve(followLineData[0]);
-					//LCD.drawString(Integer.toString(followLineData[0]), 1, 1);
 				}
 				else if(followLineData[0] > 0)
 				{
 					myRobot.setCurCurve(followLineData[0]);
-					//LCD.drawString(Integer.toString(followLineData[0]), 1, 1);
 				}
 				
 				//Start the Thread for Entree Zone
@@ -108,7 +96,7 @@ public class HappinessTherapy {
 				if(myRobot.getValidServer() == false)
 				{
 					myRobot.StopMotor();
-					//LCD.drawString("motor stopped", 0, 1);
+					
 					//Wait that "ValidServer" was update from false to true
 					while(myRobot.getValidServer() == false){}
 					

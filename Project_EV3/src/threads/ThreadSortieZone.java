@@ -5,19 +5,26 @@ import robotmodel.Position;
 import robotmodel.Robot;
 
 /**
- * 
+ * Forgot the idea of thread
+ * it's just a class who manage when robot leave conflict area
  * @author promet
  *
  */
-
 public class ThreadSortieZone implements Runnable {
 	
 	private Robot myThreadRobot;
 	
+	/**
+	 * Builder by default
+	 * @param pRobot
+	 */	
 	public ThreadSortieZone(Robot pRobot) {
 		myThreadRobot = pRobot;
 	}
-	
+	/**
+	 * run function
+	 * send request to server
+	 */
 	public void run()
 	{
 		//set current position of the robot
