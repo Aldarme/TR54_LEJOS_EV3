@@ -67,8 +67,7 @@ Le circuit mis à notre disposition est découpé en plusieurs zones:
 \hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{circuit.png}\hss}\hfill\null\newline
 
 \chapter{Politique de négociation}
-Afin de mettre en œuvre une régulation au sein de la zone d'intersection, quatre protocoles nous furent proposés
-afin d'administrer le droit de passage.
+Afin de mettre en œuvre une régulation au sein de la zone d'intersection, quatre protocoles nous furent proposés (en cours et en Tp) afin d'administrer le droit de passage.
 
 \begin{itemize}
 \item Feux communicants:
@@ -307,9 +306,10 @@ La solution qui a été mise en place fut de dissocier le code serveur et le cod
 Enfin, cette solution nous a permis de pouvoir effectuer des tests via l'outil "Netcat", afin de simuler des envois de données provenant de robots dans un environnement isolé.
 
 \section{Suivi de ligne}
+La principale difficulté quant au suivi de ligne reste la détection des couleurs. Il nous avait été proposé de travailler avec les données brutes du capteur RGB, mais au final, l'utilisation de données, traité au préalable par la brique Lejos, c'est avéré nous apporter plus de souplesse dans la détection des couleurs.
+\newpage
 
-
-\part{Conclusion}
+\section{Conclusion}
 Lors de ce Tp, il nous fut demandé de réaliser une intersection autonome en utilisant les robots Lejos EV3.
 
 Pour cela, nous avons dû mettre en place les structures suivantes:
@@ -322,9 +322,18 @@ Pour cela, nous avons dû mettre en place les structures suivantes:
 \end{itemize}
 
 Vis-à-vis de la communication sans fil, bien que les robots soient dotés de Wi-Fi, l'utilisation de ce dernier reste extrêmement handicapant, du fait de son côté aléatoire.
-%ajouter critique de valentin
+Concernant notre serveur, ce dernier est fonctionnel, mais adapté à une structure de données de petite taille, même si certains aspects seraient exactement les mêmes à grande échelle. Cependant, il reste certains points qui pourraient ne pas fonctionner. 
+En effet, les traitements effectués par le serveur s'effectuent dès lors d'une réception de données. Le problème qui ainsi, peut se poser, est que les listes de requêtes et de passage étant de grande taille, elles seront très longues à explorer, ce qui induit un temps de traitement supérieur au temps entre deux réceptions de message, ce qui pourrait causer des problèmes d'accès à des ressources partagées.
+Pour pallier ce problème, il nous suffirait d’implémenter des threads utilisant des exclusions mutuelles (mutex), pour accéder aux ressources critiques. Cette solution n’a pas été retenue car jugée trop "lourde" dans le cas de cette structure.
+Une autre méthode, afin de manager de grandes structures de données en tenant compte de priorités, aurait pu être implémentée au travers de "TAS Max".
 
 Concernant le suivi de ligne, bien que l'algorithme utilisé soit totalement fonctionnel, un problème handicapant persiste, la couleur. En effet, la brique Lejos nous permet de détecter les couleurs, ce qui nous est indispensable. Cependant, il s'avère que les couleurs évoluent, changent au cours de la journée en fonction de la quantité de lumière. Nous obligeant à devoir, lors de chaque séance, effectuer un nouvel échantillonnage des couleurs, afin que les robots puissent suivre le parcours sans dévier.
 
+Afin de continuer à faire évoluer le projet, nous avons pensé qu'il serait intéressant de développer les parties suivantes:
+\begin{itemize}
+\item Au long du semestre, nous avons travaillé sur un circuit donné; il serait cependant intéressant de savoir si le protocole développé reste fonctionnel, si le circuit venait à changer, en ayant des zones de conflits plus complexes.
+
+\item De plus, utilisant plusieurs robots, avec des IDs différents, nous devons actuellement les paramétrer à la main. Une solution envisageable, serait d'implémenter une discussion entre les robots, afin qu'ils se découvrent et s'attribuent eux-mêmes des identifiants.
+\end{itemize}
 
 \end{document}
