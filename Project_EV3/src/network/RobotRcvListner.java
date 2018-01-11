@@ -1,10 +1,16 @@
 package network;
 
-import java.nio.ByteBuffer;
+import java.nio.ByteBuffer; 
 import java.util.Vector;
 
 import lejos.hardware.lcd.LCD;
 import robotmodel.Robot;
+
+/**
+ * 
+ * @author promet
+ *
+ */
 
 public class RobotRcvListner implements BroadcastListener{
 
@@ -15,6 +21,10 @@ public class RobotRcvListner implements BroadcastListener{
 		this.myRobot = pMyRobot;
 	}
 	
+	/**
+	 * Function trigger when a message is detecte
+	 * @param message
+	 */
 	@Override
 	public void onBroadcastReceived(byte[] message)
 	{

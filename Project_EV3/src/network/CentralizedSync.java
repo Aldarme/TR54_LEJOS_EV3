@@ -14,8 +14,10 @@ import robotmodel.Robot;
 
 public class CentralizedSync {	
 
-	/*
+	/**
 	 * Listner to get acquitment from server for ValidServer
+	 * @param myRobot
+	 * @throws IOException
 	 */
 	public static void addRobotRcvListner(Robot myRobot) throws IOException
 	{
@@ -23,8 +25,11 @@ public class CentralizedSync {
 		BroadcastReceiver.getInstance().addListener(myRcvListner);
 	}
 
-	/*
+	/**
 	 * Send robots information as a String
+	 * @param DataToSend
+	 * @throws SocketException
+	 * @throws IOException
 	 */
 	public static void sendPos(String DataToSend) throws SocketException, IOException
 	{

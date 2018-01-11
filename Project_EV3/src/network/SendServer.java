@@ -10,10 +10,13 @@ import java.io.IOException;
 
 public class SendServer {
 	
-//	public static SendServer() {
-//		// TODO Auto-generated constructor stub
-//	}
-	
+	/**
+	 * Set of data to send to the server
+	 * @param pID
+	 * @param pSpeed
+	 * @param pPosition
+	 * @param pCurve
+	 */
 	public static void dataToSend(int pID, int pSpeed, int pPosition, int pCurve)
 	{
 		try {
