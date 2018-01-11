@@ -44,9 +44,7 @@
 \part{Introduction}
 
 \chapter{Présentation}
-Lors de ce TP Projet,
-il nous fut proposé d'implémenter des "Véhicules Guidés Autonome" (VGA), afin de mettre en œuvre un contrôle
-temps réel sans fil, destiné à prévenir le passage d'une intersection selon un protocole prédéfini.
+Dans le cadre de notre projet de TR54(Modélisation et Commandes des systèmes temps réels) nous avons choisi d'implémenter le sujet de "L'intersection autonome". Il s'agit de mettre en oeuvre un contrôle temps réel sans fil sur des "Véhicules Guidés Automatiques" (VGA), afin de gérer leur passage à une intersection et de prévenir les collisions, ceci suivant une politique prédéfinie.
 
 \chapter{Objectif}
 L'objectif du projet est la réalisation d'une intersection autonome en utilisant les robots Lego EV3.
@@ -75,15 +73,15 @@ Programmation horaire en donnant la couleur de feu à chaque voie (rouge/vert, r
 On peut pousser l'approche pour que le robot soit au courant du temps qui reste pour obtenir le vert et ainsi adapter sa vitesse en fonction.
 
 \item La négociation binaire:
-Les véhicules arrivent et demandent l'accès au serveur pour son passage.
-Puis, si le passage n'est pas occupé, le robot obtient le droit de passage, sinon il est enregistré et il attend l'autorisation, qu'il aura une fois la zone libre.
-Enfin, lorsque le robot à finit de traverser la zone, il envoie un acquittement, afin de notifier le serveur que la zone de conflit est libre.
+Les véhicules arrivent dans la zone d'entrée et demandent l'accès au serveur pour son passage.
+Si la zone de conflit n'est pas occupée, le robot obtient le droit de passage, sinon il est enregistré et il attend l'autorisation du serveur. Une fois la zone libérée, le serveur lui donne le droit de passage.
+Une fois que le robot a fini de traverser la zone de conflit, il envoie un acquittement, afin de notifier au serveur qu'elle est libre.
 
 \item Synchronisation de vitesse:
-A l’approche de l'intersection (zone d’entrée) un robot envoie une requête de passage au serveur d’intersection.
-De son côté le serveur construit une séquence de passage ordonnée à partir des requêtes reçues et la retransmet
+À l’approche de l'intersection (zone d’entrée ???? ou de stockage) un robot envoie une requête de passage au serveur.
+De son côté, ce dernier construit une séquence de passage ordonnée à partir des requêtes reçues et la retransmet
 à l’ensemble des robots concernés. La liste contient l’ensemble des robots ayant émis une requête pour franchir
-l’intersection, leur position et leur vitesse. Tous les robots sont autorisés à franchir l’intersection, mais ils doivent synchroniser leur vitesse avec ceux qui les précèdent dans la séquence. Par exemple, si un robot est en position 3 dans la séquence, il ne pourra traverser qu’après que le robot en position 2 soit sorti de la séquence. Pour ce faire, chaque robot, une fois dans la séquence de passage, doit émettre régulièrement auprès du serveur des messages pour l’informer de sa nouvelle position et sa nouvelle vitesse. Ces informations sont retransmises à
+l’intersection, leur position et leur vitesse. Tous les robots sont autorisés à franchir l’intersection, mais ils doivent synchroniser leur vitesse avec ceux qui les précèdent dans la séquence, afin que ceux-ci passent en premier. Par exemple, si un robot est en position 3 dans la séquence, il ne pourra traverser qu’après que le robot en position 2 soit sorti de la séquence. Pour ce faire, chaque robot, une fois dans la séquence de passage, doit émettre régulièrement auprès du serveur des messages pour l’informer de sa nouvelle position et sa nouvelle vitesse. Ces informations sont retransmises à
 tous les robots par la séquence de passage. Tant qu’un robot n’est pas dans la séquence de passage, il doit s’arrêter avant l’intersection.
 
 \item Synchronisation par réservation (AIM):
@@ -115,8 +113,8 @@ Concernant la construction de la séquence de passage, devant permettre le franc
 
 \chapter{UML}
 
-\section{Diagramme de classe}
-Nous avons construit notre projet selon les diagrammes de classes suivantes:\newline
+\section{Diagramme de classes}
+Nous avons construit notre projet selon les diagrammes de classes suivants:\newline
 
 \hfill\hbox to 0pt{\hss\includegraphics[width=20cm]{robotmodel.png}\hss}\hfill\null\newline
 
@@ -130,7 +128,7 @@ Nous avons construit notre projet selon les diagrammes de classes suivantes:\new
 
 \section{Diagramme de séquence}
 
-Afin de décrire les échanges entre les robots et le serveur, lors de la détection de la marque orange et ainsi l'entrée dans la séquence de passage, nous avons réalisé le diagramme de séquence suivante:
+Afin de décrire les échanges entre les robots et le serveur, lors de la détection de la marque orange, ainsi qu'à l'entrée dans la séquence de passage, nous avons réalisé le diagramme de séquence suivante:
 
 \hfill\hbox to 0pt{\hss\includegraphics[width=11cm]{diagSeq.png}\hss}\hfill\null\newline
 
@@ -138,20 +136,20 @@ Afin de décrire les échanges entre les robots et le serveur, lors de la détec
 \chapter{Intersection}
 
 \section{Politique de négociation}
-La politique de négociation utilisée pour notre projet, afin de gérer le droit de passage des robots au sein de la zone de conflit, est la politique de synchronisation des vitesses. Bien que cette politique est été imposé par le sujet, elle offre une méthodologie plus complète que les autres politiques présentés plus tôt dans ce chapitre.
+La politique de négociation utilisée pour notre projet, afin de gérer le droit de passage des robots au sein de la zone de conflit, est la politique de synchronisation des vitesses. Bien que cette politique ait été imposée par le sujet, elle offre une méthodologie plus complète que les autres politiques présentés plus tôt dans ce chapitre.
 
-En effet, on retrouve la gestion via un serveur centralisé, mais qui offre une mécanique plus sophistiquée, en utilisant plusieurs zones de contrôle. De plus, une interaction interrobot afin d'adapter la vitesse déplacement entre les robots au sein des zones offre une méthodologie plus élégante.
+En effet, on retrouve la gestion via un serveur centralisé, mais qui offre un mécanisme plus sophistiqué, en utilisant plusieurs zones de contrôle. De plus, une communication inter-robot afin d'adapter la vitesse de déplacement entre les robots au sein des zones offre une méthodologie plus élégante.
 
 \section{Stratégie de régulation}
 Pour ce projet, deux stratégies de régulation nous furent proposées.
-Nous avons choisi d'implémenter la politique de "BATCH", étant, après analyse la stratégie la plus performante.
+Nous avons choisi d'implémenter la politique de "BATCH",la jugeant plus performante, après analyse.
 
 Le principal inconvénient de la stratégie "FIFO", réside dans son utilisation de l'horloge.
-En effet, dans le cas où deux robots se présentaient quasiment au même instant pour franchir la zone d'intersection et que l'un des messages transmis au serveur soit perdu, compromit, ou envoyé avec un retard, alors il y aurait un risque que le deuxième robot s'engage dans la zone d'intersection alors que le premier robot est déjà en train de franchir cette zone.
+En effet, dans le cas où deux robots se présentent quasiment au même instant pour franchir la zone d'intersection, si l'un des messages transmis est perdu, compromis ou envoyé en retard alors il y a un risque que le deuxième robot s'engage dans la zone de conflit alors que le premier est déjà en train de la franchir.
 
-De plus, cette stratégie ne donne pas de priorité en fonction du nombre de robots sur une section. Ainsi, il peut se produire un cas d'engorgement sur une zone, mais que cette dernière ne puisse pas évacuer ces occupants.
+De plus, cette stratégie ne tient pas compte du nombre de robot dans une section pour donner la priorité de passage. Ainsi, il peut se produire un cas d'engorgement sur une zone, sans que cette dernière ne puisse évacuer ces occupants.
 
-La politique de "BATCH" a l'avantage de pallier ces deux problèmes, étant certes plus complexe mais couvrant plus précisément les situations de conflit ou d'interblocages.
+La politique de "BATCH" étant certes plus complexe, a l'avantage de pallier ces deux problèmes, en couvrant plus précisément les situations de conflit ou d'interblocages.
 
 \chapter{Communication sans fil}
 Comme nous l'avons vu dans le chapitre précédent, la communication sans fil est au cœur même de notre projet. En effet, s'est elle qui nous permet de mettre en place notre politique de négociation et notre stratégie de régulation.
@@ -309,7 +307,7 @@ Enfin, cette solution nous a permis de pouvoir effectuer des tests via l'outil "
 La principale difficulté quant au suivi de ligne reste la détection des couleurs. Il nous avait été proposé de travailler avec les données brutes du capteur RGB, mais au final, l'utilisation de données, traité au préalable par la brique Lejos, c'est avéré nous apporter plus de souplesse dans la détection des couleurs.
 \newpage
 
-\section{Conclusion}
+\chapter{Conclusion}
 Lors de ce Tp, il nous fut demandé de réaliser une intersection autonome en utilisant les robots Lejos EV3.
 
 Pour cela, nous avons dû mettre en place les structures suivantes:

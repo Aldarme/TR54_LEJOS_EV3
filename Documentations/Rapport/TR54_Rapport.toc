@@ -23,4 +23,4 @@
 \contentsline {chapter}{\numberline {11}Difficult\IeC {\'e}s rencontr\IeC {\'e}es \& Solutions apport\IeC {\'e}es}{21}
 \contentsline {section}{\numberline {11.1}Partie serveur}{21}
 \contentsline {section}{\numberline {11.2}Suivi de ligne}{21}
-\contentsline {section}{\numberline {11.3}Conclusion}{22}
+\contentsline {chapter}{\numberline {12}Conclusion}{22}
