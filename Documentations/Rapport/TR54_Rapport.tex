@@ -49,15 +49,15 @@ il nous fut proposé d'implémenter des "Véhicules Guidés Autonome" (VGA), afi
 temps réel sans fil, destiné à prévenir le passage d'une intersection selon un protocole prédéfini.
 
 \chapter{Objectif}
-L'objectif du projet est la réalisation d'une intersection autonome en utilisant les robots Légo EV3.
-Trois robots (ou plus) devrons se déplacer sur un circuit en forme de huit et négocier leur droit de passage à
+L'objectif du projet est la réalisation d'une intersection autonome en utilisant les robots Lego EV3.
+Trois robots (ou plus) devront se déplacer sur un circuit en forme de huit et négocier leur droit de passage à
 l'intersection par communication sans fil afin d'éviter les collisions.
 
 \part{Éléments à notre disposition}
 %Afin de mettre en œuvre notre projet, nous avons eu à dispositions les éléments suivants.
 
 \chapter{Le circuit}
-Le circuit mise à notre disposition est découpé en plusieurs zones:
+Le circuit mis à notre disposition est découpé en plusieurs zones:
 \begin{itemize}
 \item Zone d’entrée/zone de stockage (approche de l’intersection)
 \item Zone de conflit (où un seul robot peut être présent)
@@ -72,13 +72,13 @@ afin d'administrer le droit de passage.
 
 \begin{itemize}
 \item Feux communicants:
-Programmation horaire en donnant la couleurs de feu à chaque voie (rouge/vert, rouge/rouge, vert/vert, vert/rouge).
-On peut pousser l'approche pour que le robots soit au courant du temps qui reste pour obtenir le vert et ainsi adapter sa vitesse en fonction.
+Programmation horaire en donnant la couleur de feu à chaque voie (rouge/vert, rouge/rouge, vert/vert, vert/rouge).
+On peut pousser l'approche pour que le robot soit au courant du temps qui reste pour obtenir le vert et ainsi adapter sa vitesse en fonction.
 
 \item La négociation binaire:
-Les véhicules arrivent et demande l'accès au serveur pour son passage.
+Les véhicules arrivent et demandent l'accès au serveur pour son passage.
 Puis, si le passage n'est pas occupé, le robot obtient le droit de passage, sinon il est enregistré et il attend l'autorisation, qu'il aura une fois la zone libre.
-Enfin, lorsque le robot à fini de traverser la zone, il envoie un acquittement, afin de notifier le serveur que la zone de conflit est libre.
+Enfin, lorsque le robot à finit de traverser la zone, il envoie un acquittement, afin de notifier le serveur que la zone de conflit est libre.
 
 \item Synchronisation de vitesse:
 A l’approche de l'intersection (zone d’entrée) un robot envoie une requête de passage au serveur d’intersection.
@@ -88,7 +88,7 @@ l’intersection, leur position et leur vitesse. Tous les robots sont autorisés
 tous les robots par la séquence de passage. Tant qu’un robot n’est pas dans la séquence de passage, il doit s’arrêter avant l’intersection.
 
 \item Synchronisation par réservation (AIM):
-Cette méthode fut développé par l'université du Texas, elle consiste à se que le véhicule estime l'horaire d'occupation de la zone de conflit afin de pouvoir demander une réservation.
+Cette méthode fut développée par l'université du Texas, elle consiste à ce que le véhicule estime l'horaire d'occupation de la zone de conflit afin de pouvoir demander une réservation.
 Ainsi, si l'horaire est libre, le serveur l'accepte, sinon il lui refuse.
 Enfin, en cas de refus, le véhicule devra retarder son horaire.
 \end{itemize}
@@ -99,12 +99,12 @@ Concernant la construction de la séquence de passage, devant permettre le franc
 \begin{itemize}
 \item FIFO (first-in first-out) : 
 	Le premier arrivé à l’intersection est le premier à en sortir, dans le cadre de cette
-	politique, un soin particulier devra être apporté à la prévention des situations d’inter-blocage
+	politique, un soin particulier devra être apporté à la prévention des situations d’interblocage
 	
 \item Batch : lorsqu’un robot se présente à l’intersection, il est ajouté à la séquence de passage, si et
 	uniquement si, l’une des deux conditions suivantes est remplie :
 	\begin{itemize}
-	\item La séquence de passage actuelle est vide
+	\item La séquence de passage actuel est vide
 	\item Le dernier robot dans la séquence de passage provient de la même voie que le robot actuel
 	\item Le dernier robot dans la séquence de passage provient de l’autre voie, mais le délai entre l’ajout
 		de ce dernier robot et du robot courant est supérieur à un seuil dT (par exemple 5 secondes)
@@ -117,7 +117,7 @@ Concernant la construction de la séquence de passage, devant permettre le franc
 \chapter{UML}
 
 \section{Diagramme de classe}
-Nous avons construit notre projet selon les diagrammes de classes suivants:\newline
+Nous avons construit notre projet selon les diagrammes de classes suivantes:\newline
 
 \hfill\hbox to 0pt{\hss\includegraphics[width=20cm]{robotmodel.png}\hss}\hfill\null\newline
 
@@ -131,7 +131,7 @@ Nous avons construit notre projet selon les diagrammes de classes suivants:\newl
 
 \section{Diagramme de séquence}
 
-Afin de décrire les échanges entre les robots et le serveur, lors de la détection de la marque orange et ainsi l'entrée dans la séquence de passage, nous avons réalisé le diagramme de séquence suivant:
+Afin de décrire les échanges entre les robots et le serveur, lors de la détection de la marque orange et ainsi l'entrée dans la séquence de passage, nous avons réalisé le diagramme de séquence suivante:
 
 \hfill\hbox to 0pt{\hss\includegraphics[width=11cm]{diagSeq.png}\hss}\hfill\null\newline
 
@@ -139,38 +139,38 @@ Afin de décrire les échanges entre les robots et le serveur, lors de la détec
 \chapter{Intersection}
 
 \section{Politique de négociation}
-La politique de négociation utilisé pour notre projet, afin de gérer le droit de passage des robots au sein de la zone de conflit, est la politique de synchronisation des vitesses. Bien que cette politique ai été imposé par le sujet, elle offre une méthodologie plus complète que les autres politiques présenté plus tôt dans ce chapitre.
+La politique de négociation utilisée pour notre projet, afin de gérer le droit de passage des robots au sein de la zone de conflit, est la politique de synchronisation des vitesses. Bien que cette politique est été imposé par le sujet, elle offre une méthodologie plus complète que les autres politiques présentés plus tôt dans ce chapitre.
 
-En effet, on retrouve la gestion via un serveur centralisé, mais qui offre une mécanique plus sophistiqué, en utilisant plusieurs zones de contrôle. De plus, une interaction inter-robot afin d'adapter la vitesse déplacement entre les robots au sein des zones offre une méthodologie plus élégante. 
+En effet, on retrouve la gestion via un serveur centralisé, mais qui offre une mécanique plus sophistiquée, en utilisant plusieurs zones de contrôle. De plus, une interaction interrobot afin d'adapter la vitesse déplacement entre les robots au sein des zones offre une méthodologie plus élégante.
 
 \section{Stratégie de régulation}
 Pour ce projet, deux stratégies de régulation nous furent proposées.
 Nous avons choisi d'implémenter la politique de "BATCH", étant, après analyse la stratégie la plus performante.
 
 Le principal inconvénient de la stratégie "FIFO", réside dans son utilisation de l'horloge.
-En effet, dans le cas ou deux robots se présentais quasiment au même instant pour franchir la zone d'intersection et que l'un des messages transmis au serveur soit perdu, compromit, ou envoyé avec un retard, alors il y aurait un risque que le deuxième robot s'engage dans la zone d'intersection alors que le premier robot est déjà en train de franchir cette zone.
+En effet, dans le cas où deux robots se présentaient quasiment au même instant pour franchir la zone d'intersection et que l'un des messages transmis au serveur soit perdu, compromit, ou envoyé avec un retard, alors il y aurait un risque que le deuxième robot s'engage dans la zone d'intersection alors que le premier robot est déjà en train de franchir cette zone.
 
-De plus, cette stratégie ne donne pas de priorité en fonction du nombre de robot sur une section. Ainsi, il peut se produire un cas d'engorgement sur une zone, mais que cette dernière ne puisse pas évacuer ces occupants.
+De plus, cette stratégie ne donne pas de priorité en fonction du nombre de robots sur une section. Ainsi, il peut se produire un cas d'engorgement sur une zone, mais que cette dernière ne puisse pas évacuer ces occupants.
 
-La politique de "BATCH" à l'avantage de pallier à ces deux problèmes, étant certes plus complexe mais couvrant plus précisément les situations de conflits ou d'inter-blocages.
+La politique de "BATCH" a l'avantage de pallier ces deux problèmes, étant certes plus complexe mais couvrant plus précisément les situations de conflit ou d'interblocages.
 
 \chapter{Communication sans fil}
-Comme nous l'avons vu dans le chapitre précédant, la communication sans fil est au cœur même de notre projet. En effet, s'est elle qui nous permet de mettre en place notre politique de négociation et notre stratégie de régulation.
-La communication sans fil se base sur une connexion Wifi, client/serveur, avec un échange évoluant autour d'une synchronisation centralisée des données.
+Comme nous l'avons vu dans le chapitre précédent, la communication sans fil est au cœur même de notre projet. En effet, s'est elle qui nous permet de mettre en place notre politique de négociation et notre stratégie de régulation.
+La communication sans fil se base sur une connexion Wi-Fi, client/serveur, avec un échange évoluant autour d'une synchronisation centralisée des données.
 
-La communication sans fil est donc divisé en deux parties:
+La communication sans fil est donc divisée en deux parties:
 
 \section{Partie Client (robot Lejos EV3)}%Pierre
 Comme nous l'avons vu précédemment, si nous voulons pouvoir mettre en place une politique de négociation et une stratégie de régulation, il va nous falloir échanger des données clefs entre les robots, et le serveur.
 
-Pour cela, nous avons mis en place une communication basé sur le protocole TCP/IP, devant nous permettre de certifier l'envoie des données. Le protocole TCP étant orienté-connexion par le principe de la poignée de main (handshake), il établit au préalable une connexion entre les processus avant de débuter la transmission.
+Pour cela, nous avons mis en place une communication basée sur le protocole TCP/IP, devant nous permettre de certifier l'envoi des données. Le protocole TCP étant orientée-connexion par le principe de la poignée de main (handshake), il établit au préalable une connexion entre les processus avant de débuter la transmission.
 
 Nous échangeons ainsi entre le robot et le serveur, une structure de données regroupant:
   \begin{itemize}
   \item L'identifiant du robot envoyant les données.
   \item La vitesse actuelle du robot en déplacement.
   \item La zone dans laquelle le robot évolue (zone entrée, stockage, conflit et sortie).
-  \item La virage du quel le robot provient, afin de permettre au serveur de déterminer de quel coté le robot se présente, afin de franchir la zone de conflit.
+  \item La virage, du quel le robot provient, afin de permettre au serveur de déterminer de quel côté le robot se présente, afin de franchir la zone de conflit.
   \end{itemize}
   
 Les données sont transmises sous la forme d'une chaine de caractères afin de pouvoir être envoyé tels qu'une séquence de contrôle; nous l'avons basé sur le modèle suivant:
@@ -184,22 +184,22 @@ Il ne lui reste plus qu'à être traité par le serveur, pour utiliser les donn�
 \section{Partie Serveur}%Valentin
 
 Pour ce projet, concernant le type de serveur utilisé, nous nous sommes porté sur un serveur Java tournant sur machine Linux ou Windows.
-Nous avons choisi ce type de serveur, car il nous a permis de contourner les difficultés rencontré par le premier type de serveur que nous avions choisi d'utiliser; le Robot Lejos EV3.
-La principale difficulté étant que l'utilisation du wifi sur les robots reste très aléatoire, quand à arriver a le connecté à un hotspot. De plus, cela nous à permit de nous séparer de la contrainte matériel, nous permettant de développer le serveur et de réaliser des tests en dehors des heures de tp.
+Nous avons choisi ce type de serveur, car il nous a permis de contourner les difficultés rencontrées par le premier type de serveur que nous avions choisi d'utiliser; le eobot Lejos EV3.
+La principale difficulté étant que l'utilisation du Wi-Fi sur les robots reste très aléatoire, quant à arriver à le connecté à un hotspot. De plus, cela nous à permis de nous séparer de la contrainte matériel, nous permettant de développer le serveur et de réaliser des tests en dehors des heures de Tp.
 
-Le serveur utilisé dans ce projet est un serveur fonctionnant avec le protocole UDP. Son rôle ici est de centraliser les messages des différents robots présent sur le circuit afin de déterminer un ordre de passage dans l’intersection, c’est-à-dire en donnant ou en ne donnant pas l’autorisation de franchir l’intersection à chaque robot.
+Le serveur utilisé dans ce projet est un serveur fonctionnant avec le protocole UDP. Son rôle ici est de centraliser les messages des différents robots présents sur le circuit afin de déterminer un ordre de passage dans l’intersection, c’est-à-dire en donnant ou en ne donnant pas l’autorisation de franchir l’intersection à chaque robot.
 
-Le serveur fonctionne en 3 parties majeures. La première partie concerne la réception et l’enregistrement des données envoyées par les robots. La seconde partie se chargera de construire la séquence de passage en fonction des requêtes reçues et en suivant la politique batch expliqué plus haut. Pour finir, le serveur envoi cette séquence de passage à l’ensemble des robots qui n’auront qu’à vérifier s’ils sont présents dans la liste. Si oui alors ils peuvent avancer, si non, ils attendent les prochaines instructions.
+Le serveur fonctionne en 3 parties majeures. La première partie concerne la réception et l’enregistrement des données envoyées par les robots. La seconde partie se chargera de construire la séquence de passage en fonction des requêtes reçues et en suivant la politique batch expliquée plus haut. Pour finir, le serveur envoie cette séquence de passage à l’ensemble des robots qui n’auront qu’à vérifier s’ils sont présents dans la liste. Si oui alors ils peuvent avancer, sinon, ils attendent les prochaines instructions.
 
 L’implémentation finale utilisée fonctionne sur un ordinateur, même si elle peut être portée sur un robot. Du point de vue du code elle fonctionne de la manière suivante.
 
-On crée un listener qui va se déclencher à chaque réception d’un message sur le réseau via le protocole UDP. A partir de se listener, les données vont être converties de Bytes à String afin de pouvoir traiter les données plus facilement. Les données sont ensuite traitées comme suit :
+On crée un listener qui va se déclencher à chaque réception d’un message sur le réseau via le protocole UDP. À partir de se listener, les données vont être converties de Bytes à String afin de pouvoir traiter les données plus facilement. Les données sont ensuite traitées comme suit :
 
-Voici un exemple de trame de donnée provenant d’un robot: " 0\textbackslash n0 \textbackslash n255 \textbackslash n-1 " \newline
+Voici un exemple de trame de données provenant d’un robot: " 0\textbackslash n0 \textbackslash n255 \textbackslash n-1 " \newline
 
 \hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{val.png}\hss}\hfill\null\newline
 
-Une fois la trame de données reçue, elle est découpée suivant les délimiteurs afin de former un couple de 4 variables rassemblant ainsi, la position, la vitesse et le sens de rotation d’un robot définit par son ID. A cela, on ajoute le temps système du serveur afin de gérer la dimension temporelle des demandes. On prend ici le temps serveur, car c’est une base commune à tous les robots.
+Une fois la trame de données reçues, elle est découpée suivant les délimiteurs afin de former un couple de 4 variables rassemblant ainsi, la position, la vitesse et le sens de rotation d’un robot défini par son ID. À cela, on ajoute le temps système du serveur afin de gérer la dimension temporelle des demandes. On prend ici le temps serveur, car c’est une base commune à tous les robots.
 
 Une fois tout ceci effectué, on passe à la partie mise à jour de la séquence de requête. En effet, chaque robot effectuant une requête ne se retrouve pas directement dans la séquence de passage, c’est pourquoi il faut une séquence « tampon » afin de conserver les demandes. Il se présente alors 2 cas :
 \begin{itemize}
@@ -246,25 +246,25 @@ Une fois créée, cette séquence ressemble à celle-ci: " -1 \textbackslash n0 
 \hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{val2.png}\hss}\hfill\null\newline
 
 \chapter{Franchissement des zones de contrôles}
-Comme expliqué dans la partie précédente, le franchissement des zones de contrôle est rendu possible par la communication sans fil (wifi) que nous venons de voir. De plus, un échange standardisé est mis en place de façon à disposer de même design, quand au format utilisé pour échanger les données entre les robots et le serveur et inversement.
+Comme expliqué dans la partie précédente, le franchissement des zones de contrôle est rendu possible par la communication sans fil (Wi-Fi) que nous venons de voir. De plus, un échange standardisé est mis en place de façon à disposer de même design, quant au format utilisé pour échanger les données entre les robots et le serveur et inversement.
 
 Nous allons voir dans cette partie, comment nous avons implémenté la synchronisation de vitesse, ainsi que la politique de "Batch".
 
-Comme illustré par le diagramme de séquence, à l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présenté plus tôt) au serveur, puis va s'engager dans cette zone.
+Comme illustré par le diagramme de séquence, à l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présentées plus tôt) au serveur, puis va s'engager dans cette zone.
 Ensuite, le robot va arriver dans la zone de stockage où il va à nouveau émettre les mêmes données, actualisé à destination du serveur.
 
-Dans un même temps, la stratégie de régulation est mis en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cette acquittement est négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé. Dans le cas contraire, le robot va s'engager dans la zone de conflit, mais si un autre robot est présent en sortie de zone, ce dernier va le détecter grâce à l'utilisation du capteur de distance et ainsi ralentir et franchir la zone.
+Dans un même temps, la stratégie de régulation est mise en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cet acquittement est négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé. Dans le cas contraire, le robot va s'engager dans la zone de conflit, mais si un autre robot est présent en sortie de zone, ce dernier va le détecter grâce à l'utilisation du capteur de distance et ainsi ralentir et franchir la zone.
 
 Ensuite, le robot franchira la zone de sortie, qui une fois dépassé, nous permettra de retirer le robot de la séquence de passage.
 
-Il est également à remarquer, qu'il nous fut proposé d'ajouter un contrôle visuel (à l'aide de LED) afin de nous assuré que la séquence de passage est valide. Le premier robot dans cette séquence affichera une couleur verte, le deuxième une couleur orange et à partir du troisième une couleur rouge sera utilisé.
+Il est également à remarquer, qu'il nous fut proposé d'ajouter un contrôle visuel (à l'aide de LED) afin de nous assurer que la séquence de passage est valide. Le premier robot dans cette séquence affichera une couleur verte, le deuxième une couleur orange et à partir du troisième une couleur rouge sera utilisée.
 
 \chapter{Le suivi de ligne} %Nico && Nadège
 
 \section{Méthode utilisée}
 Notre méthode de suivi de ligne consiste à suivre la bordure gauche du chemin, en alternant entre le blanc et le noir. Le robot diminue progressivement la vitesse d’une de ses roues (gauche ou droite selon la rotation voulue) dans l’objectif d’avancer tout en tournant, et va tout droit lorsqu’il est dans le bleu.
 
-Afin de ne pas rester bloqué dans l'un r des deux couleurs, nos avons adoptés une dégression progressive de la vitesse de la roue concernée. En d'autres terles, plus le robot reste dans une même couleur, plus la rotation augmente, avec pour objectif de ne pas trop s'éloigner de la bordure.
+Afin de ne pas rester bloqué dans l'un r des deux couleurs, nous avons adopté une dégression progressive de la vitesse de la roue concernée. En d'autres termes, plus le robot reste dans une même couleur, plus la rotation augmente, avec pour objectif de ne pas trop s'éloigner de la bordure.
 
 Nous diminuons la vitesse du moteur de la roue gauche si nous voulons tourner à gauche, à l’inverse, nous diminuons la vitesse du moteur de la roue droite si nous voulons tourner à droite. La vitesse de la roue concernée évolue selon la fonction suivante :
 
@@ -277,8 +277,8 @@ Avec :
 \item "i" le nombre d’itérations durant lesquels le robot se trouve dans une même couleur.
 \end{itemize}
 
-Vu que C est inférieur à 1, la vitesse diminuera progressivement jusqu’à 0.
-Nous avons des coefficients différents car nous avons observé, par tâtonnement, un comportement anormal lorsque le coefficient était égal à 0.95 pour les 2 rotations.
+Vu que "C" est inférieur à 1, la vitesse diminuera progressivement jusqu’à 0.
+Nous avons des coefficients différents cars nous avons observé, par tâtonnement, un comportement anormal lorsque le coefficient était égal à 0.95 pour les 2 rotations.
 
 \section{Détection virage précédent}
 Dans le but de connaître la zone de stockage dans laquelle se trouve chaque robot. Nous avons implémenté un compteur permettant de connaître le sens du virage précédant l’entrée dans la zone de stockage.
@@ -295,9 +295,15 @@ Lorsque le robot passe sur les marqueurs orange (correspond à l’entrée du ro
 
 \part{Analyse critique}
 
-\chapter{Difficultés rencontrées}
+\chapter{Difficultés rencontrées \& Solutions apportées}
 
-\chapter{Solutions apportées}
+\section{Partie serveur}
+Au début du projet, l’idée fut de partir sur une implantation du serveur, au cœur du même code que la partie client pour les robots afin de ne travailler que sur un projet gloable.
+
+Cette contrainte imposait donc uniquement l’utilisation des robots pour le serveur, ce qui d’une part n’était pas très pratique pour la connexion (comme la connexion Wi-Fi était un peu aléatoire).
+D’autre part, cela nous contraignait à ne pouvoir réaliser des tests uniquement lorsque les robots étaient à notre disposition ; nous empêchant donc de travailler depuis chez nous.
+La solution qui a été mise en place fut de dissocier le code serveur et le code client, afin de pouvoir faire tourner le serveur sur n’importe quelle plateforme (aussi bien sur un robot que sur une machine Linux ou Windows).
+Enfin, cette solution nous a permis de pouvoir effectuer des tests via l'outil "netcat", afin de simuler des envois de données provenant de robots dans un environnement isolé.
 
 \part{Conclusion}
 
