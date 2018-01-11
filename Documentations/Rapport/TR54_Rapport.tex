@@ -298,14 +298,33 @@ Lorsque le robot passe sur les marqueurs orange (correspond à l’entrée du ro
 \chapter{Difficultés rencontrées \& Solutions apportées}
 
 \section{Partie serveur}
-Au début du projet, l’idée fut de partir sur une implantation du serveur, au cœur du même code que la partie client pour les robots afin de ne travailler que sur un projet gloable.
+Au début du projet, l’idée fut de partir sur une implantation du serveur, au cœur du même code que la partie client pour les robots afin de ne travailler que sur un projet global.
 
 Cette contrainte imposait donc uniquement l’utilisation des robots pour le serveur, ce qui d’une part n’était pas très pratique pour la connexion (comme la connexion Wi-Fi était un peu aléatoire).
 D’autre part, cela nous contraignait à ne pouvoir réaliser des tests uniquement lorsque les robots étaient à notre disposition ; nous empêchant donc de travailler depuis chez nous.
+
 La solution qui a été mise en place fut de dissocier le code serveur et le code client, afin de pouvoir faire tourner le serveur sur n’importe quelle plateforme (aussi bien sur un robot que sur une machine Linux ou Windows).
-Enfin, cette solution nous a permis de pouvoir effectuer des tests via l'outil "netcat", afin de simuler des envois de données provenant de robots dans un environnement isolé.
+Enfin, cette solution nous a permis de pouvoir effectuer des tests via l'outil "Netcat", afin de simuler des envois de données provenant de robots dans un environnement isolé.
+
+\section{Suivi de ligne}
+
 
 \part{Conclusion}
+Lors de ce Tp, il nous fut demandé de réaliser une intersection autonome en utilisant les robots Lejos EV3.
+
+Pour cela, nous avons dû mettre en place les structures suivantes:
+\begin{itemize}
+\item Une communication sans fil, basée sur le Wi-Fi.
+
+\item Une politique de négociation ainsi qu'une stratégie de régulation
+
+\item Un algorithme nous permettant de suivre le parcours d'un circuit.
+\end{itemize}
+
+Vis-à-vis de la communication sans fil, bien que les robots soient dotés de Wi-Fi, l'utilisation de ce dernier reste extrêmement handicapant, du fait de son côté aléatoire.
+%ajouter critique de valentin
+
+Concernant le suivi de ligne, bien que l'algorithme utilisé soit totalement fonctionnel, un problème handicapant persiste, la couleur. En effet, la brique Lejos nous permet de détecter les couleurs, ce qui nous est indispensable. Cependant, il s'avère que les couleurs évoluent, changent au cours de la journée en fonction de la quantité de lumière. Nous obligeant à devoir, lors de chaque séance, effectuer un nouvel échantillonnage des couleurs, afin que les robots puissent suivre le parcours sans dévier.
 
 
 \end{document}
