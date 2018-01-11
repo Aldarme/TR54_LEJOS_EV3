@@ -27,12 +27,14 @@ public class ThreadStockZone implements Runnable {
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
 										myThreadRobot.getSpeed(), 
 										myThreadRobot.getPosition(),
-										myThreadRobot.getCurCurve()
+										ThreadEntreeZone.curveDefined
+										
+										//myThreadRobot.getCurCurve()
 									);
 
 		myThreadRobot.motorController.tachyReset();
 		
-		while(myThreadRobot.motorController.getTachy() < 360)
+		while(myThreadRobot.motorController.getTachy() < 180)
 		{
 			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
 			myThreadRobot.motorController.forward();

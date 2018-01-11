@@ -28,7 +28,8 @@ public class ThreadSortieZone implements Runnable {
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
 										myThreadRobot.getSpeed(), 
 										myThreadRobot.getPosition(),
-										myThreadRobot.getCurCurve()
+										ThreadEntreeZone.curveDefined
+										//myThreadRobot.getCurCurve()
 									);
 
 		//.myThreadRobot.motorController.tachyReset();
@@ -38,6 +39,8 @@ public class ThreadSortieZone implements Runnable {
 			//LCD.drawString(Integer.toString(myThreadRobot.motorController.getTachy()), 0, 1);
 			myThreadRobot.motorController.forward();
 		}
-		
+		myThreadRobot.SetValidServer(false);
+
+		myThreadRobot.setLedMode(0);
 	}
 }

@@ -13,6 +13,8 @@ public class ThreadEntreeZone implements Runnable {
 	
 	private Robot myThreadRobot;
 	
+	static int curveDefined = 0;
+	
 	public ThreadEntreeZone(Robot pRobot) {
 		myThreadRobot = pRobot;
 	}
@@ -21,13 +23,14 @@ public class ThreadEntreeZone implements Runnable {
 	{
 		//set current position of the robot
 		myThreadRobot.setPosition(Position.ENTREE);
-		myThreadRobot.setLedMode(5);
-		
+		curveDefined = myThreadRobot.getCurCurve();
+		LCD.drawString("Virage", 0, 1);
+		LCD.drawInt(curveDefined, 0, 2);
 		//send current position to the server
 		network.SendServer.dataToSend(	myThreadRobot.getId(), 
 										myThreadRobot.getSpeed(), 
 										myThreadRobot.getPosition(),
-										myThreadRobot.getCurCurve()
+										curveDefined
 									);
 
 		myThreadRobot.motorController.tachyReset();

@@ -20,7 +20,7 @@ public class SendServer {
 			CentralizedSync.sendPos( Integer.toString(pID) + "\n" 
 									+ Integer.toString(pPosition) + "\n" 
 									+ Integer.toString(pSpeed)+ "\n" 
-									+ Integer.toString(pCurve)
+									+ Integer.toString(pCurve)+ "\n-1"
 									);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

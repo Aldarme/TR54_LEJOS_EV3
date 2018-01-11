@@ -17,17 +17,40 @@ public class HappinessTherapy {
 
 	public static void main(String[] args) throws InterruptedException, IOException
 	{
+		
+
+		int robotID = 0;
+        int button = 0;
+        
+        while(button != Button.ID_ENTER)
+        {
+                LCD.clear();
+                LCD.drawString("Choose Robot ID",0,0);
+                LCD.drawString("ID : " + robotID,0,1);
+                button = Button.waitForAnyPress();
+                if(button == Button.ID_UP) {
+                    if(robotID < 9)
+                         robotID++;
+                }
+                else if(button == Button.ID_DOWN) {
+                        if(robotID >0)
+                                robotID--;
+                }
+        }
+
 		//Init my robot with an ID
-		 final int button = Button.waitForAnyPress();
-		 Robot myRobot;
-		 if(button == Button.ID_RIGHT) 
-			 myRobot = new Robot(0);
-		 else if(button == Button.ID_UP) 
-			 myRobot = new Robot(1);
-		 else if(button == Button.ID_LEFT) 
-			 myRobot = new Robot(2);
-		 else
-			 myRobot = new Robot(3);
+        Robot myRobot = new Robot(robotID);
+        
+//		 final int button = Button.waitForAnyPress();
+//		 Robot myRobot;
+//		 if(button == Button.ID_RIGHT) 
+//			 myRobot = new Robot(0);
+//		 else if(button == Button.ID_UP) 
+//			 myRobot = new Robot(1);
+//		 else if(button == Button.ID_LEFT) 
+//			 myRobot = new Robot(2);
+//		 else
+//			 myRobot = new Robot(3);
 		
 		myRobot.setLedMode(0);
 		
@@ -62,6 +85,8 @@ public class HappinessTherapy {
 				&& (myRobot.getColorSensor()[2] > orangeTab[4] && myRobot.getColorSensor()[2] <  orangeTab[5]	) 
 				)
 			{
+				//blinked red
+				myRobot.setLedMode(5);
 				//Send current Curve					
 				if(followLineData[0] < 0)
 				{
@@ -79,12 +104,11 @@ public class HappinessTherapy {
 				
 				//Start the Thread for Stock Zone
 				threadStock.run();
-				
+
 				if(myRobot.getValidServer() == false)
 				{
 					myRobot.StopMotor();
 					//LCD.drawString("motor stopped", 0, 1);
-					
 					//Wait that "ValidServer" was update from false to true
 					while(myRobot.getValidServer() == false){}
 					
@@ -98,6 +122,9 @@ public class HappinessTherapy {
 				
 				//Start the Thread for Sortie Zone
 				threadSortie.run();
+
+				//nothing
+				myRobot.setLedMode(0);
 			}
 		}
 	}

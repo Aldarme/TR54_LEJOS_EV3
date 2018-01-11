@@ -34,7 +34,7 @@ public class RobotMoveMode {
 	private int compteurNoir=1;
 	private int compteurVirage=0;
 	float rgb[]= new float[3];
-	float ratioG = 0.96f;
+	float ratioG = 0.95f;
 	float ratioD = 0.96f;
 
 	RobotMotorController motorController;
@@ -99,10 +99,15 @@ public class RobotMoveMode {
 //				}
 				
 				//Black	ou orange		
-				if((rgb[0]<= 0.07 && rgb[1]<= 0.07 && rgb[2]<=0.07) || ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)
+				if((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)
 						&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)
 						&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
-					)) {
+					)
+				{
+					stateBeforeStop=1;
+					motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
+				}
+				else if((rgb[0]<= 0.07 && rgb[1]<= 0.07 && rgb[2]<=0.07))  {
 					stateBeforeStop=1;
 					compteurBlanc=1;
 					motorController.rotateLeftProgressive((float)(Math.pow(ratioG, compteurNoir)));	
