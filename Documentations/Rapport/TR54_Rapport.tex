@@ -114,6 +114,28 @@ Concernant la construction de la séquence de passage, devant permettre le franc
 
 \part{Travail Réalisé}
 
+\chapter{UML}
+
+\section{Diagramme de classe}
+Nous avons construit notre projet selon les diagrammes de classes suivants:\newline
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=20cm]{robotmodel.png}\hss}\hfill\null\newline
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{lejos_EV3.png}\hss}\hfill\null\newline
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=20cm]{scheduler.png}\hss}\hfill\null\newline
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=21cm]{network.png}\hss}\hfill\null\newline
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=21cm]{HappinessTherapy.png}\hss}\hfill\null\newline
+
+\section{Diagramme de séquence}
+
+Afin de décrire les échanges entre les robots et le serveur, lors de la détection de la marque orange et ainsi l'entrée dans la séquence de passage, nous avons réalisé le diagramme de séquence suivant:
+
+\hfill\hbox to 0pt{\hss\includegraphics[width=11cm]{diagSeq.png}\hss}\hfill\null\newline
+
+
 \chapter{Intersection}
 
 \section{Politique de négociation}
@@ -134,16 +156,16 @@ La politique de "BATCH" à l'avantage de pallier à ces deux problèmes, étant 
 
 \chapter{Communication sans fil}
 Comme nous l'avons vu dans le chapitre précédant, la communication sans fil est au cœur même de notre projet. En effet, s'est elle qui nous permet de mettre en place notre politique de négociation et notre stratégie de régulation.
-La communication sans fil se base sur une connexion Wifi, client/serveur, avec un échange de données évoluant autour d'une synchronisation centralisée des données.
+La communication sans fil se base sur une connexion Wifi, client/serveur, avec un échange évoluant autour d'une synchronisation centralisée des données.
 
 La communication sans fil est donc divisé en deux parties:
 
 \section{Partie Client (robot Lejos EV3)}%Pierre
-Comme nous l'avons vu précédemment, si nous voulons pouvoir mettre en place une politique négociation et une stratégie de régulation, il va nous falloir échanger des données clefs entre les robots, et le serveur.
+Comme nous l'avons vu précédemment, si nous voulons pouvoir mettre en place une politique de négociation et une stratégie de régulation, il va nous falloir échanger des données clefs entre les robots, et le serveur.
 
 Pour cela, nous avons mis en place une communication basé sur le protocole TCP/IP, devant nous permettre de certifier l'envoie des données. Le protocole TCP étant orienté-connexion par le principe de la poignée de main (handshake), il établit au préalable une connexion entre les processus avant de débuter la transmission.
 
-Nous acheminons ainsi du robot au serveur, une structure de données regroupant:
+Nous échangeons ainsi entre le robot et le serveur, une structure de données regroupant:
   \begin{itemize}
   \item L'identifiant du robot envoyant les données.
   \item La vitesse actuelle du robot en déplacement.
@@ -151,11 +173,11 @@ Nous acheminons ainsi du robot au serveur, une structure de données regroupant:
   \item La virage du quel le robot provient, afin de permettre au serveur de déterminer de quel coté le robot se présente, afin de franchir la zone de conflit.
   \end{itemize}
   
-Les données étant transmise sous la forme d'une chaine de caractères afin de pouvoir être envoyé en une seul  séquence de contrôle; nous l'avons basé sur le modèle suivant:
+Les données sont transmises sous la forme d'une chaine de caractères afin de pouvoir être envoyé tels qu'une séquence de contrôle; nous l'avons basé sur le modèle suivant:
 
 \hfill\hbox to 0pt{\hss\includegraphics[width=10cm]{sequ.png}\hss}\hfill\null\newline
 
-Ainsi, la même séquence de contrôle pourra être utiliser pour transmettre les informations du serveur au robot.
+Ainsi, la même séquence de contrôle pourra être utilisé pour transmettre les informations du serveur au robot.
 
 Il ne lui reste plus qu'à être traité par le serveur, pour utiliser les données.
 
@@ -224,15 +246,18 @@ Une fois créée, cette séquence ressemble à celle-ci: " -1 \textbackslash n0 
 \hfill\hbox to 0pt{\hss\includegraphics[width=15cm]{val2.png}\hss}\hfill\null\newline
 
 \chapter{Franchissement des zones de contrôles}
-Nous l'avons vu ci-dessus, le franchissement des zones de contrôle est rendu possible par la communication sans fil (wifi) que nous venons de voir. Ainsi, un échange standardisé est mis en place de façon à disposer de même design, quand au format utilisé pour échanger les données entre les robots et le serveur et inversement.
-Nous allons voir dans cette partie, l'implémentation de la synchronisation de vitesse et de la politique de "Batch".
+Comme expliqué dans la partie précédente, le franchissement des zones de contrôle est rendu possible par la communication sans fil (wifi) que nous venons de voir. De plus, un échange standardisé est mis en place de façon à disposer de même design, quand au format utilisé pour échanger les données entre les robots et le serveur et inversement.
 
+Nous allons voir dans cette partie, comment nous avons implémenté la synchronisation de vitesse, ainsi que la politique de "Batch".
 
-A l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présenté plus tôt) au serveur, puis va s'engager dans cette zone.
-Ensuite, le robot va arriver dans la zone de stockage où il va à nouveau émettre les mêmes données actualisé à destination du serveur. Dans un même temps, la stratégie de régulation est mis en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cette acquittement soit négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé.
+Comme illustré par le diagramme de séquence, à l'approche de l'intersection (ou zone d'entrée), le robot va émettre les données( que nous avons présenté plus tôt) au serveur, puis va s'engager dans cette zone.
+Ensuite, le robot va arriver dans la zone de stockage où il va à nouveau émettre les mêmes données, actualisé à destination du serveur.
 
-%rajouter les led en fonction de la position scheduler
-%ajouter la politique de regul vitesse fait avec le capteur de distance
+Dans un même temps, la stratégie de régulation est mis en œuvre. Lorsque le robot entre dans la zone de stockage, il va commencer à attendre un acquittent du serveur, lui spécifiant qu'il peut ou non, traversé la zone de conflit. Dans le cas où cette acquittement est négatif, le robot cessera alors d'avancer pour attendre que son acquittement soit validé. Dans le cas contraire, le robot va s'engager dans la zone de conflit, mais si un autre robot est présent en sortie de zone, ce dernier va le détecter grâce à l'utilisation du capteur de distance et ainsi ralentir et franchir la zone.
+
+Ensuite, le robot franchira la zone de sortie, qui une fois dépassé, nous permettra de retirer le robot de la séquence de passage.
+
+Il est également à remarquer, qu'il nous fut proposé d'ajouter un contrôle visuel (à l'aide de LED) afin de nous assuré que la séquence de passage est valide. Le premier robot dans cette séquence affichera une couleur verte, le deuxième une couleur orange et à partir du troisième une couleur rouge sera utilisé.
 
 \chapter{Le suivi de ligne} %Nico && Nadège
 
