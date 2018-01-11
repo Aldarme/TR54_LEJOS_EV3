@@ -22,7 +22,7 @@ public class RobotMotorController
 		this.rightMotor = new EV3LargeRegulatedMotor(MotorPort.C);	//Define right motor on Port C
 	}
 	
-	/*
+	/**
 	 * Move forward
 	 */
 	public void forward()
@@ -32,7 +32,7 @@ public class RobotMotorController
 	}
 	
 	/**
-	 * Initialization of speed and state of robot (move forward)
+	 *  Initialization of speed and state of robot (move forward)
 	 */
 	public void init(){
 		
@@ -41,9 +41,10 @@ public class RobotMotorController
 		//forward();
 	}
 	
-	/*
+	/**
 	 * Robot rotate on itself of specify angle
 	 * BEWARE: rotate function delete all brevious order of movement
+	 * @param angle
 	 */
 	public void rotate(float angle)
 	{
@@ -52,12 +53,20 @@ public class RobotMotorController
 		this.rightMotor.rotate((int) angle);
 	}
 	
+	/**
+	 * Rotate left
+	 * @param angle
+	 */
 	public void rotateLeft(float angle)
 	{
 		float rotation = angle * 2.33f;
 		this.rightMotor.rotate((int) angle, true);
 	}
 	
+	/**
+	 * Rotate right
+	 * @param angle
+	 */
 	public void rotateRight(float angle)
 	{
 		float rotation = angle * 2.33f;
@@ -94,23 +103,26 @@ public class RobotMotorController
 		forward();
 	}
 	
-	/*
+	/**
 	 * set speed on left && right motor by multiplying a ceof on ( LeftMotorMaxSpeed && RightMotorMaxSpeed)
+	 * @param pSpeed
 	 */
 	public void setSpeed(float pSpeed) {
 		this.leftMotor.setSpeed( (int) (pSpeed / 100f * this.leftMotor.getMaxSpeed()) );
 		this.rightMotor.setSpeed( (int) (pSpeed / 100f * this.rightMotor.getMaxSpeed()) );
 	}
 	
-	/*
+	/**
 	 * Set motor speed, by multiplying a ceof * LeftMotorMaxSpeed
+	 * @param pSpeed
 	 */
 	public void setLeftSpeed(float pSpeed) {
 		this.leftMotor.setSpeed( (int) (pSpeed / 100f * this.leftMotor.getMaxSpeed()) );
 	}
 	
-	/*
+	/**
 	 * Set motor speed, by multiplying a ceof * RightMotorMaxSpeed
+	 * @param pSpeed
 	 */
 	public void setRightSpeed(float pSpeed) {
 		this.rightMotor.setSpeed( (int) (pSpeed / 100f * this.rightMotor.getMaxSpeed()) );
@@ -121,11 +133,19 @@ public class RobotMotorController
 		return this.leftMotor.getMaxSpeed();		 
 	}
 	
+	/**
+	 * get max speed
+	 * @return
+	 */
 	public float getMaxSpeedD()
 	{
 		return this.rightMotor.getMaxSpeed();		 
 	}
 	
+	/**
+	 * get current speed
+	 * @return
+	 */
 	public int getCurrentSpeed()
 	
 	{
@@ -133,17 +153,24 @@ public class RobotMotorController
 		 return avrgSpeed;
 	}
 	
+	/**
+	 * get tachy value from wheel
+	 * @return
+	 */
 	public int getTachy()
 	{
 		return this.leftMotor.getTachoCount();
 	}
 	
+	/**
+	 * get reset tachy value
+	 */
 	public void tachyReset()
 	{
 		this.leftMotor.resetTachoCount();
 	}
 	
-	/*
+	/**
 	 * Stop robot's motors
 	 */
 	public void stop()

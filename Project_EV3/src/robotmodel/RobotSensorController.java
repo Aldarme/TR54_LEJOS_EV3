@@ -10,7 +10,6 @@ import lejos.robotics.SampleProvider;
  * @author promet
  *
  */
-
 public class RobotSensorController
 {
 	private float[] rgbSensor = new float[3];
@@ -33,14 +32,7 @@ public class RobotSensorController
 		distSampler = myDistSensor.getDistanceMode();
 	}
 	
-	/*
-	 *	CAPTEUR DE COULEURS
-	 *	Créez une fonction qui fait avancer votre robot jusqu’à ce que le capteur couleur rencontre un marqueur au sol
-	 *	de couleur définie.
-	 *	Vous réutiliserez le code produit dans la partie « Pilotage des moteurs » pour gérer le déplacement du robot.
-	 */	
-	
-	/*
+	/**
 	 * RGB Sensor
 	 */
 	public void getColor()
@@ -48,33 +40,32 @@ public class RobotSensorController
 		rgbSampler.fetchSample(rgbSensor, 0);		
 	}
 	
-	//return rgb value return by the color sensor
+	/**
+	 * return rgb value return by the color sensor
+	 * @return
+	 */
 	public float[] getRgbSampler()
 	{
 		return rgbSensor;
 	}
 	
-	/*	
+	/**
 	 * Distance Sensor
+	 * @return
 	 */
-	/*
-	 *Créez la fonction float distance() qui retourne la distance renvoyée par le capteur de distance (voir EV3UltrasonicSensor) dans l’API.
-	 *Ensuite,	appelez cette fonction, 
-	 *			affichez le résultat des mesures sur l’écran LCD 
-	 *			et enregistrez-les dans un fichier CSV.
-	 */		
 	public float getDist()
 	{
 		distSampler.fetchSample(distSample, 0);
 		return distSample[0];		 
 	}
 	
-	/*	
-	 *	Créez la fonction float distance(int n) qui retourne la distance renvoyée par le capteur de distance 
-	 *	après,		application d’un filtre moyenneur de n échantillons. Comparez les résultats avec la méthode distance() 
-	 * 	pour n = 2, n = 5 et n = 10.
+	/**
+	 * 
+	 * Return average distance, from distancec sensor
+	 * 	Use a average filter of n elements
+	 * @param pNbrOfVal
+	 * @return
 	 */
-	
 	public float getDist(int pNbrOfVal)
 	{
 		float temp=0;

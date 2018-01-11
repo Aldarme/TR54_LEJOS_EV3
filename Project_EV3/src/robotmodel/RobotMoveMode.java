@@ -1,7 +1,5 @@
 package robotmodel;
 
-import exporter.CsvExporter;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -47,8 +45,8 @@ public class RobotMoveMode {
 	
 	/**
 	 * Function followLine 
+	 * @return
 	 */
-	
 	public int followLine() 
 	{
 		if(sensorController.getDist()<distanceMin)
@@ -68,35 +66,9 @@ public class RobotMoveMode {
 					motorController.init();
 			}else {
 				sensorController.getColor();
-			
-				//Methode numero 2 si noir tourner a Gauche si blanc tourner a droite
-				
-				//rgb = sensorController.getRgbSampler();
-				
-				//Ecriture couleur renvoy�e
-			//	LCD.drawString("RGB : ", 0, 0, false);
-			//	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-			//	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-			//	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
-			//	LCD.drawString(Float.toString(sensorController.getDist()), 0, 4, false);
 				
 				//Get value from capteur				
 				rgb = sensorController.getRgbSampler();
-				
-				//Ecriture couleur renvoy�e
-			//	LCD.drawString("RGB : ", 0, 0, false);
-			//	LCD.drawString(Float.toString(rgb[0]), 0, 1, false);
-			//	LCD.drawString(Float.toString(rgb[1]), 0, 2, false);
-			//	LCD.drawString(Float.toString(rgb[2]), 0, 3, false);
-				
-				//Orange
-//				if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)
-//						&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)
-//						&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
-//					)
-//				{
-//					//Do Nothing
-//				}
 				
 				//Black	ou orange		
 				if((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)
@@ -130,14 +102,6 @@ public class RobotMoveMode {
 				else if ((rgb[0]>0.0264 && rgb[0]<0.123 ) && (rgb[1]>0.059 && rgb[1]<0.16 ) && (rgb[2]>0.105 && rgb[2]<151 ))
 				{			
 					stateBeforeStop=3;
-			//			//on evite le cas du orange
-			//			if ((rgb[0] > 0.11f && 	rgb[0] <  0.2f	)	//get real value
-			//					&& (rgb[1] > 0.04f && rgb[1] <  0.08f	)	//of ORANGE RGB
-			//					&& (rgb[2] > 0.002f && rgb[2] <  0.08f	) 
-			//				)
-			//			{
-			//				return 1;
-			//			}
 					compteurNoir=1;
 					compteurBlanc=1;
 					compteurVirage=0;
@@ -147,110 +111,4 @@ public class RobotMoveMode {
 		}
 		return 	compteurVirage;
 	}
-	
-	
-	/*
-	 * Robotleader
-	 * set speed at 40% of maxSpeed
-	 */
-	void leader(int pTime, float pW)
-	{
-		pSpeedG = motorController.getMaxSpeedG() * pW;				
-		pSpeedD = motorController.getMaxSpeedD() * pW;	
-		
-		motorController.setLeftSpeed(Math.round(pSpeedG));
-		motorController.setRightSpeed(Math.round(pSpeedD));
-		
-		motorController.forward();
-		try {
-			TimeUnit.MILLISECONDS.sleep(pTime);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-		e.printStackTrace();
-		}
-		
-		motorController.stop();
-		try {
-			TimeUnit.MILLISECONDS.sleep(pTime);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-		e.printStackTrace();
-		}
-	}
-	
-	/*
-	 * Tout ou rien
-	 * set speed at 50%, if distance < 0.15m
-	 */
-	void allOrNothing(float pW)
-	{		
-		pSpeedG = motorController.getMaxSpeedG() * pW;
-		pSpeedD = motorController.getMaxSpeedD() * pW;
-		
-		if(sensorController.getDist(5) <= 0.15) //getDist() retourne une distance en mètre
-		{
-			pSpeedG = 0f;
-			pSpeedD = 0f;
-		}			
-		LCD.clear();
-		LCD.drawString(Float.toString(sensorController.getDist(5)), 0, 2);
-		CsvExporter.Writefile(sensorController.getDist());					//write on CSV file
-		motorController.setLeftSpeed(Math.round(pSpeedG));
-		motorController.setRightSpeed(Math.round(pSpeedD));
-		motorController.forward();
-	}
-	
-	/*
-	 * %(t) indique la vitesse appliquée le cycle précédent (en pourcentage de la vitesse maximale)
-	 * Ts est le temps de cycle
-	 * d(t) désigne la distance renvoyée par le capteur		  
-	 */
-	
-	
-	/*
-	 * "A un point" -- %(t + T s ) = max(min(50, a × (d(t) − D)) , 0)
-	 * a -> multiplicateur pour transformer la distance en vitesse
-	 * D -> offset de distance
-	 * "d(t) ou mySensor.getDist(5)" désigne la distance renvoyée par le capteur
-	 */
-	void aUnPoint(int a, float D)
-	{
-		CsvExporter.Writefile(sensorController.getDist());		//write on CSV file
-		
-		currentSpeed = Math.max( Math.min(50, a * (sensorController.getDist(5) - D) ), 0);
-		
-		motorController.setLeftSpeed(Math.round(currentSpeed));
-		motorController.setRightSpeed(Math.round(currentSpeed));
-		
-		motorController.forward();
-	}
-	
-	
-	/* 
-	 * "A deux points" -- %(t + T s ) = min(max(2.5 × (d(t) − 20), min(max(a × (d(t) − D), 0) , %(t))) , 50)
-	 * a -> multiplicateur pour transformer la distance en vitesse
-	 * D -> offset de distance
-	 * "d(t) ou mySensor.getDist(5)" désigne la distance renvoyée par le capteur
-	 * "%(t) ou previousSpeed" indique la vitesse appliquée le cycle précédent (en pourcentage de la vitesse maximale)
-	 */
-	void aDeuxPoint(int a, float D)
-	{
-		CsvExporter.Writefile(sensorController.getDist());		//write on CSV file
-		
-		previousSpeed = currentSpeed;
-		currentSpeed = Math.min(
-								Math.max(
-										 2.5f * (previousSpeed - 20f) , Math.min(
-												 								Math.max(
-												 											a * (sensorController.getDist(5) - D) , 0
-												 										), sensorController.getDist(5) 
-												 	 						   ) 
-										) , 50 
-								);
-		
-		
-		motorController.setLeftSpeed(Math.round(currentSpeed));
-		motorController.setRightSpeed(Math.round(currentSpeed));
-		motorController.forward();
-	}	
 }
